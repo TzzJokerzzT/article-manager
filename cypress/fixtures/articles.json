@@ -1,0 +1,23 @@
+{
+  "sampleArticle": {
+    "title": "Understanding React State Management",
+    "author": "John Doe",
+    "summary": "A comprehensive guide to React state management patterns and best practices.",
+    "content": "React state management has evolved significantly over the years. From class-based components with setState to hooks like useState and useReducer, developers now have multiple ways to handle component state. For complex applications, libraries like Redux and Zustand provide global state management solutions.",
+    "category": "tech"
+  },
+  "secondArticle": {
+    "title": "The Future of Web Development",
+    "author": "Jane Smith",
+    "summary": "Exploring emerging trends and technologies shaping the future of web development.",
+    "content": "Web development continues to evolve with new frameworks, tools, and paradigms. Server-side rendering is making a comeback with frameworks like Next.js and Nuxt.js, while micro-frontends are becoming popular for large-scale applications.",
+    "category": "tech"
+  },
+  "businessArticle": {
+    "title": "Effective Team Leadership",
+    "author": "Mike Johnson",
+    "summary": "Essential strategies for leading high-performing teams in modern organizations.",
+    "content": "Leading a team effectively requires a combination of technical knowledge, emotional intelligence, and clear communication skills. Understanding your team members' strengths and weaknesses allows you to delegate tasks appropriately and foster growth.",
+    "category": "business"
+  }
+}
