@@ -62,6 +62,213 @@ El Sistema de Gestión de Artículos es una aplicación web desarrollada con Rea
 
 El proyecto sigue una **Arquitectura Hexagonal (Ports & Adapters)** combinada con un enfoque de **Vertical Slice Architecture**, organizando el código en capas bien definidas:
 
+### Diagrama de Arquitectura del Sistema
+
+```mermaid
+graph TB
+    %% User Interface Layer
+    subgraph "🎨 PRESENTACIÓN"
+        UI[User Interface]
+        PAGES[Pages Router]
+        COMPONENTS[React Components]
+        LAYOUT[Layout & Navigation]
+    end
+
+    %% Application Layer
+    subgraph "⚡ APLICACIÓN"
+        HOOKS[Custom Hooks]
+        STORE[Redux Store]
+        QUERY[React Query]
+        SERVICES[Services Layer]
+    end
+
+    %% Domain Layer
+    subgraph "🏛️ DOMINIO"
+        TYPES[Domain Types]
+        INTERFACES[Repository Interfaces]
+        RULES[Business Rules]
+    end
+
+    %% Infrastructure Layer
+    subgraph "🔧 INFRAESTRUCTURA"
+        MOCK[Mock Repositories]
+        STORAGE[Local Storage]
+        FUTURE[Future: HTTP API]
+    end
+
+    %% Data Flow
+    UI --> HOOKS
+    PAGES --> COMPONENTS
+    COMPONENTS --> HOOKS
+    HOOKS --> STORE
+    HOOKS --> QUERY
+    HOOKS --> SERVICES
+    SERVICES --> INTERFACES
+    INTERFACES --> MOCK
+    MOCK --> STORAGE
+    INTERFACES -.-> FUTURE
+
+    %% Styling
+    classDef presentation fill:#e1f5fe
+    classDef application fill:#f3e5f5
+    classDef domain fill:#e8f5e8
+    classDef infrastructure fill:#fff3e0
+
+    class UI,PAGES,COMPONENTS,LAYOUT presentation
+    class HOOKS,STORE,QUERY,SERVICES application
+    class TYPES,INTERFACES,RULES domain
+    class MOCK,STORAGE,FUTURE infrastructure
+```
+
+### Diagrama de Flujo de Datos - Gestión de Estado
+
+```mermaid
+graph LR
+    %% UI Components
+    subgraph "🎨 UI COMPONENTS"
+        AC[ArticleCard]
+        AF[ArticleForm]
+        AL[ArticleList]
+        AP[ArticlePage]
+    end
+
+    %% Custom Hooks Layer
+    subgraph "🎯 CUSTOM HOOKS"
+        UA[useArticles]
+        UCA[useCreateArticle]
+        URF[useRateFavorite]
+        UTA[useToggleFavorite]
+    end
+
+    %% State Management
+    subgraph "📦 STATE MANAGEMENT"
+        RQ[React Query Cache]
+        RS[Redux Store]
+    end
+
+    %% Repositories
+    subgraph "💾 REPOSITORIES"
+        AR[Article Repository]
+        RR[Rating Repository]
+        FR[Favorite Repository]
+    end
+
+    %% Storage
+    LS[(Local Storage)]
+
+    %% Data Flow
+    AC --> UA
+    AF --> UCA
+    AL --> UA
+    AP --> UA
+    AC --> URF
+    AC --> UTA
+
+    UA --> RQ
+    UCA --> RQ
+    URF --> RQ
+    UTA --> RQ
+
+    AC --> RS
+    AL --> RS
+
+    RQ --> AR
+    RQ --> RR
+    RQ --> FR
+
+    AR --> LS
+    RR --> LS
+    FR --> LS
+
+    %% Styling
+    classDef ui fill:#e3f2fd
+    classDef hooks fill:#f1f8e9
+    classDef state fill:#fce4ec
+    classDef repo fill:#f3e5f5
+    classDef storage fill:#fff8e1
+
+    class AC,AF,AL,AP ui
+    class UA,UCA,URF,UTA hooks
+    class RQ,RS state
+    class AR,RR,FR repo
+    class LS storage
+```
+
+### Diagrama de Componentes - Feature Articles
+
+```mermaid
+graph TB
+    %% Pages
+    subgraph "📄 PAGES"
+        ALP[ArticlesPage]
+        ADP[ArticleDetailPage]
+        CAP[CreateArticlePage]
+        EAP[EditArticlePage]
+    end
+
+    %% Article Feature Components
+    subgraph "🎨 ARTICLES FEATURE"
+        AC[ArticleCard]
+        AF[ArticleForm]
+
+        subgraph "🔍 FILTERS"
+            ACF[CategoryFilter]
+            ASF[SubCategoryFilter]
+            AMR[MinimumRating]
+            AIS[InputSearch]
+            ACB[ClearButton]
+        end
+
+        PAG[Pagination]
+    end
+
+    %% Shared Components
+    subgraph "🔧 SHARED COMPONENTS"
+        BTN[Button]
+        FORM[Form]
+        SELECT[Select]
+        TAGS[Tags]
+        TEXTAREA[Textarea]
+    end
+
+    %% Business Logic
+    subgraph "⚡ BUSINESS LOGIC"
+        AHOOKS[Article Hooks]
+        ASERVICES[Article Services]
+    end
+
+    %% Flow
+    ALP --> AC
+    ALP --> ACF
+    ALP --> PAG
+    ADP --> AC
+    CAP --> AF
+    EAP --> AF
+
+    AC --> BTN
+    AC --> TAGS
+    AF --> FORM
+    AF --> SELECT
+    AF --> TEXTAREA
+    AF --> BTN
+    ACF --> SELECT
+
+    AC --> AHOOKS
+    AF --> AHOOKS
+    AHOOKS --> ASERVICES
+
+    %% Styling
+    classDef pages fill:#e8eaf6
+    classDef features fill:#e0f2f1
+    classDef shared fill:#fdf2e9
+    classDef logic fill:#f3e5f5
+
+    class ALP,ADP,CAP,EAP pages
+    class AC,AF,ACF,ASF,AMR,AIS,ACB,PAG features
+    class BTN,FORM,SELECT,TAGS,TEXTAREA shared
+    class AHOOKS,ASERVICES logic
+```
+
 ### Capas Arquitectónicas
 
 ```
@@ -471,6 +678,79 @@ describe('Article Management Happy Path', () => {
     // Test del flujo completo del usuario
   });
 });
+```
+
+### Diagrama de Estrategia de Testing
+
+```mermaid
+pyramid
+    title Testing Strategy Pyramid
+
+    %% E2E Tests (Top)
+    section E2E Tests
+        "Cypress E2E" : 15
+        "User Workflows" : 10
+        "Happy Paths" : 8
+
+    %% Integration Tests (Middle)
+    section Integration Tests
+        "Feature Tests" : 25
+        "Hook Integration" : 20
+        "Component Integration" : 15
+
+    %% Unit Tests (Base)
+    section Unit Tests
+        "Component Tests" : 40
+        "Hook Tests" : 35
+        "Utility Tests" : 30
+        "Repository Tests" : 25
+```
+
+### Flujo E2E - Article Lifecycle
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as React UI
+    participant H as Hooks Layer
+    participant RQ as React Query
+    participant R as Repository
+    participant LS as LocalStorage
+
+    Note over U,LS: Article Creation Flow
+
+    U->>UI: Navigate to /articles/create
+    UI->>UI: Render ArticleForm
+
+    U->>UI: Fill form & click Submit
+    UI->>H: useCreateArticle()
+    H->>RQ: useMutation trigger
+    RQ->>R: articleRepository.create()
+    R->>LS: Store new article
+
+    LS-->>R: Article saved
+    R-->>RQ: Return new article
+    RQ-->>H: onSuccess callback
+    H->>RQ: invalidateQueries(['articles'])
+    RQ-->>UI: Redirect to /articles
+
+    Note over U,LS: Rating & Favorite Flow
+
+    U->>UI: Click star rating
+    UI->>H: useRateArticle()
+    H->>RQ: Rating mutation
+    RQ->>R: ratingRepository.rate()
+    R->>LS: Update rating
+
+    U->>UI: Click favorite heart
+    UI->>H: useToggleFavorite()
+    H->>RQ: Favorite mutation
+    RQ->>R: favoriteRepository.toggle()
+    R->>LS: Update favorite status
+
+    Note over U,LS: Real-time UI Updates
+    LS-->>UI: Optimistic updates
+    UI-->>U: Immediate feedback
 ```
 
 ### Coverage y Calidad
