@@ -614,12 +614,40 @@ export const useToggleFavorite = () => {
 </ArticleFilter>
 ```
 
-## Configuración del Proyecto
+## Instalación y Configuración
 
 ### Requisitos del Sistema
 
 - **Node.js 22** - Versión requerida para ejecutar el proyecto
 - **Bun** (recomendado) o **npm** - Gestor de paquetes
+
+### Proceso de Instalación
+
+1. **Instalar Node.js en su versión 22**
+   - Descargar desde [nodejs.org](https://nodejs.org/)
+   - Verificar instalación: `node --version`
+
+2. **Instalar dependencias**
+
+   ```bash
+   # Con Bun (recomendado)
+   bun install
+
+   # Con npm (alternativo)
+   npm install
+   ```
+
+3. **Ejecutar el proyecto**
+
+   ```bash
+   # Con Bun
+   bun run dev
+
+   # Con npm
+   npm run dev
+   ```
+
+   La aplicación estará disponible en `http://localhost:5173`
 
 ### Path Aliases
 
