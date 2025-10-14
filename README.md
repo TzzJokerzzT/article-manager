@@ -7,7 +7,7 @@
 3. [Arquitectura del Proyecto](#arquitectura-del-proyecto)
 4. [Estructura de Directorios](#estructura-de-directorios)
 5. [Patrones de Diseño](#patrones-de-diseño)
-6. [Configuración del Proyecto](#configuración-del-proyecto)
+6. [Configuración del Proyecto](#instalación-y-configuración)
 7. [Scripts Disponibles](#scripts-disponibles)
 8. [Testing](#testing)
 9. [Path Aliases](#path-aliases)
