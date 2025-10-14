@@ -353,6 +353,7 @@ src/
 ├── pages/              # Páginas de la aplicación
 │   ├── articles/
 │   └── categories/
+│   └── categories/
 │
 ├── shared/             # Código compartido
 │   ├── components/     # Componentes reutilizables
