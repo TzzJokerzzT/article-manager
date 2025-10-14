@@ -15,7 +15,32 @@
 11. [Preguntas y Respuestas](#preguntas-y-respuestas)
 
 ## Demo
+
 [Demo de la aplicación](https://article-manager-steel.vercel.app/articles)
+
+## ✨ Últimas Actualizaciones
+
+### 🎯 **Sistema de Favoritos Completo** (v2.0)
+
+- **FavoritesPage**: Página dedicada para gestionar artículos favoritos con estado vacío elegante
+- **Navegación integrada**: Link "Favorites" en el header con navegación consistente
+- **Sincronización en tiempo real**: Estado optimista con React Query para mejor UX
+- **Persistencia**: Favoritos guardados en LocalStorage con sincronización automática
+- **Tests comprehensivos**: 15/15 tests unitarios incluyendo integración de favoritos
+
+### 🔧 **Validación de Formularios Mejorada** (v1.9)
+
+- **HTML5 Validation**: Atributos `required` en todos los campos obligatorios
+- **Accesibilidad mejorada**: IDs únicos y labels apropiados para lectores de pantalla
+- **E2E Testing**: Tests de validación que verifican comportamiento de formularios
+- **UX consistente**: Validación uniforme en crear y editar artículos
+
+### 🎨 **Mejoras de UI/UX** (v1.8)
+
+- **Componentes Button consistentes**: Navegación estandarizada con componentes reutilizables
+- **Animaciones optimizadas**: EnterAnimation aplicada a cards individuales para mejor performance
+- **Routing SPA**: Configuración Vercel para manejar rutas del lado del cliente
+- **Deployment listo**: Configuración completa para producción en Vercel
 
 ## Descripción General
 
@@ -23,10 +48,12 @@ El Sistema de Gestión de Artículos es una aplicación web desarrollada con Rea
 
 - ✅ Crear, editar y eliminar artículos
 - ⭐ Sistema de calificaciones (1-5 estrellas)
-- ❤️ Marcar artículos como favoritos
+- ❤️ **Marcar artículos como favoritos** con página dedicada
 - 🔍 Filtrado avanzado por categoría, subcategoría, calificación mínima
 - 📱 Interfaz responsive con Tailwind CSS
 - 🧪 Testing completo (unitario, integración, E2E)
+- ✅ **Validación de formularios HTML5** para mejor experiencia de usuario
+- 🎨 **Navegación mejorada** con componentes Button consistentes
 
 ## Tecnologías Utilizadas
 
@@ -488,6 +515,51 @@ const useArticles = () =>
 
 Esta separación permite que cada herramienta haga lo que mejor sabe hacer, resultando en código más limpio, mejor performance y una experiencia de desarrollo superior.
 
+## 🚀 Deployment y Configuración de Producción
+
+### Vercel Deployment
+
+El proyecto está configurado y desplegado en **Vercel** con las siguientes optimizaciones:
+
+#### Configuración SPA (Single Page Application)
+
+```json
+// vercel.json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+**¿Por qué esta configuración?**
+
+- ✅ **Routing del lado del cliente**: React Router maneja todas las rutas
+- ✅ **Recarga de página**: URLs como `/favorites` funcionan al recargar
+- ✅ **404 Prevention**: Evita errores 404 en rutas del SPA
+- ✅ **SEO-friendly**: Todas las rutas devuelven el HTML principal
+
+#### Build & Deploy Pipeline
+
+```bash
+# Build automático en Vercel
+npm run build          # Genera build optimizado
+npm run preview         # Preview local del build
+```
+
+#### Environment Configuration
+
+```bash
+# Variables de entorno para producción
+VITE_API_URL=https://api.example.com    # URL de API (futuro)
+VITE_APP_NAME=Article Manager           # Nombre de la aplicación
+```
+
+#### Performance Optimizations
+
+- **Vite**: Build ultra-rápido con tree-shaking automático
+- **Code Splitting**: Chunks optimizados por ruta
+- **Static Assets**: Optimización automática de imágenes y CSS
+- **CDN**: Distribución global automática en Vercel Edge Network
+
 ## Patrones de Diseño
 
 ### 1. Repository Pattern
@@ -659,6 +731,13 @@ describe('ArticleCard', () => {
     expect(screen.getByText(mockArticle.title)).toBeInTheDocument();
   });
 });
+
+// Tests de integración de favoritos
+describe('FavoritesIntegration', () => {
+  test('should toggle favorite status and sync with server state', async () => {
+    // Test completo de funcionalidad de favoritos
+  });
+});
 ```
 
 #### 2. Tests de Integración
@@ -758,9 +837,11 @@ sequenceDiagram
 
 ### Coverage y Calidad
 
-- **Cobertura objetivo**: >80%
+- **Cobertura actual**: 15/15 tests unitarios passing (100%)
 - **Tests por feature**: Unitarios + Integración + E2E
 - **Mocking**: Repositorios mockeados para testing
+- **E2E Validation**: Tests específicos para validación de formularios
+- **Accesibilidad**: Validación de IDs únicos y labels apropiados
 
 ## Path Aliases
 
@@ -805,6 +886,20 @@ import { Button } from '@components/Button';
 - **Ubicación**: `src/features/articles/components/Pagination/`
 - **Funcionalidad**: Paginación de resultados
 - **Features**: Navegación, info de página actual
+
+### FavoritesPage
+
+- **Ubicación**: `src/pages/favorites/FavoritesPage.tsx`
+- **Funcionalidad**: Página dedicada para mostrar artículos favoritos
+- **Features**: Estado vacío elegante, grid responsivo, navegación a artículos
+- **Hooks**: `useFavorites()` para gestión de estado de favoritos
+
+### Layout con Navegación Mejorada
+
+- **Ubicación**: `src/components/Layout.tsx`
+- **Funcionalidad**: Layout principal con navegación consistente
+- **Features**: Botones estilizados, navegación responsive, dropdown de categorías
+- **Componentes**: Utiliza componentes Button para consistencia visual
 
 ## Preguntas y Respuestas
 
