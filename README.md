@@ -62,6 +62,7 @@ El Sistema de Gestión de Artículos es una aplicación web desarrollada con Rea
 - **React 19.1.1** - Framework principal
 - **TypeScript 5.9.3** - Tipado estático
 - **Vite 7.1.7** - Build tool y dev server
+- **Node.js 22**
 
 ### Gestión de Paquetes
 
