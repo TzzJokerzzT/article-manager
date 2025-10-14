@@ -5,4 +5,5 @@ export interface SelectProps {
   categories?: Array<{ id: string; name: string }>;
   title?: string;
   required?: boolean;
+  id?: string;
 }

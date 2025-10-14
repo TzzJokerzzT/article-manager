@@ -63,6 +63,7 @@ export const ArticleForm = ({
           label="Title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          required={true}
         />
 
         <Form
@@ -70,11 +71,13 @@ export const ArticleForm = ({
           label="Author"
           value={formData.author}
           onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+          required={true}
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <Select
+          id="category"
           label="Category"
           value={formData.categoryId}
           onChange={(e) =>
@@ -86,11 +89,13 @@ export const ArticleForm = ({
           }
           title="Select Category"
           categories={CATEGORIES}
+          required={true}
         />
 
         {selectedCategory?.subcategories &&
           selectedCategory.subcategories.length > 0 && (
             <Select
+              id="subcategory"
               label="Subcategory"
               value={formData.subcategoryId || ''}
               onChange={(e) =>
