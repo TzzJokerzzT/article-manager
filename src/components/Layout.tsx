@@ -28,27 +28,20 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               </Link>
 
               <div className="flex space-x-4">
-                <Link
-                  to="/articles"
-                  className={`px-3 py-2 rounded-md ${
-                    location.pathname === '/articles'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:text-blue-600'
-                  }`}
-                >
-                  Articles
-                </Link>
+                <Button>
+                  <Link to="/articles">Articles</Link>
+                </Button>
 
-                <Link
-                  to="/favorites"
-                  className={`px-3 py-2 rounded-md ${
-                    location.pathname === '/favorites'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:text-blue-600'
-                  }`}
-                >
-                  Favorites ❤️
-                </Link>
+                <Button color="danger">
+                  <Link
+                    to="/favorites"
+                    className={`px-3 py-2 rounded-md ${
+                      location.pathname === '/favorites'
+                    }`}
+                  >
+                    Favorites
+                  </Link>
+                </Button>
 
                 <div className="relative group">
                   <Button variant="faded">Categories</Button>
