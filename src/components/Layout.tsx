@@ -3,6 +3,7 @@ import { CATEGORIES } from '@/shared/constants';
 import { useAppSelector, useAppDispatch } from '@/application/hooks/redux';
 import { setTheme } from '@/application/store/uiSlice';
 import { Button } from '@/shared/components/Button/Button';
+import { MobileMenu } from '@/shared/components/MobileMenu/MobileMenu';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -27,7 +28,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 Article Manager
               </Link>
 
-              <div className="flex space-x-4">
+              <div className="hidden md:flex space-x-4">
                 <Button>
                   <Link to="/articles">Articles</Link>
                 </Button>
@@ -64,6 +65,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <Button onClick={toggleTheme} variant="light" color="secondary">
                 {theme === 'light' ? '🌙' : '☀️'}
               </Button>
+              <MobileMenu theme={theme} />
             </div>
           </div>
         </div>
