@@ -615,6 +615,11 @@ export const useToggleFavorite = () => {
 
 ## Configuración del Proyecto
 
+### Requisitos del Sistema
+
+- **Node.js 22** - Versión requerida para ejecutar el proyecto
+- **Bun** (recomendado) o **npm** - Gestor de paquetes
+
 ### Path Aliases
 
 El proyecto utiliza path aliases para importaciones más limpias:
