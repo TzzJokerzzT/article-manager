@@ -14,14 +14,37 @@ import type { ArticleFormData } from '../components/ArtcileForm/types';
 export const useArticles = (filters: ArticleFilters) => {
   return useQuery<PaginatedResponse<Article>>({
     queryKey: ['articles', filters],
-    queryFn: () => articleRepository.findAll(filters),
+    queryFn: async () => {
+      const articlesResponse = await articleRepository.findAll(filters);
+      const favorites = await favoriteRepository.getFavorites();
+
+      // Enrich articles with favorite status
+      const enrichedArticles = articlesResponse.data.map((article) => ({
+        ...article,
+        isFavorite: favorites.includes(article.id),
+      }));
+
+      return {
+        ...articlesResponse,
+        data: enrichedArticles,
+      };
+    },
   });
 };
 
 export const useArticle = (id: string) => {
   return useQuery<Article | null>({
     queryKey: ['article', id],
-    queryFn: () => articleRepository.findById(id),
+    queryFn: async () => {
+      const article = await articleRepository.findById(id);
+      if (!article) return null;
+
+      const isFavorite = await favoriteRepository.isFavorite(id);
+      return {
+        ...article,
+        isFavorite,
+      };
+    },
     enabled: !!id,
   });
 };
@@ -103,8 +126,39 @@ export const useToggleFavorite = () => {
       }
       return favoriteRepository.addFavorite(articleId);
     },
-    onSuccess: () => {
+    // Optimistic updates
+    onMutate: async ({ articleId, isFavorite }) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['favorites'] });
+      await queryClient.cancelQueries({ queryKey: ['articles'] });
+      await queryClient.cancelQueries({ queryKey: ['article', articleId] });
+
+      // Snapshot previous values
+      const previousFavorites = queryClient.getQueryData(['favorites']);
+
+      // Optimistically update favorites
+      queryClient.setQueryData(['favorites'], (old: string[] | undefined) => {
+        const currentFavorites = old || [];
+        if (isFavorite) {
+          return currentFavorites.filter((id) => id !== articleId);
+        } else {
+          return [...currentFavorites, articleId];
+        }
+      });
+
+      return { previousFavorites };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback on error
+      if (context?.previousFavorites) {
+        queryClient.setQueryData(['favorites'], context.previousFavorites);
+      }
+    },
+    onSuccess: (_data, { articleId }) => {
+      // Invalidate all related queries to ensure consistency
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
+      queryClient.invalidateQueries({ queryKey: ['articles'] });
+      queryClient.invalidateQueries({ queryKey: ['article', articleId] });
     },
   });
 };

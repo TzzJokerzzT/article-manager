@@ -39,6 +39,17 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   Articles
                 </Link>
 
+                <Link
+                  to="/favorites"
+                  className={`px-3 py-2 rounded-md ${
+                    location.pathname === '/favorites'
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-700 hover:text-blue-600'
+                  }`}
+                >
+                  Favorites ❤️
+                </Link>
+
                 <div className="relative group">
                   <Button variant="faded">Categories</Button>
                   <div className="absolute left-0 mt-1 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">

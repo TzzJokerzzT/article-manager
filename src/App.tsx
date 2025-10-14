@@ -15,6 +15,7 @@ import { ArticlesPage } from './pages/articles/ArticlesPage';
 import { CreateArticlePage } from './pages/articles/CreateArticlePage';
 import { EditArticlePage } from './pages/articles/EditArticlePage';
 import { CategoriesPage } from './pages/categories/CategoriesPage';
+import { FavoritesPage } from './pages/favorites/FavoritesPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/articles/create" element={<CreateArticlePage />} />
               <Route path="/articles/:id" element={<ArticleDetailPage />} />
               <Route path="/articles/:id/edit" element={<EditArticlePage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
               <Route
                 path="/articles/categories/:categoryId"
                 element={<CategoriesPage />}
