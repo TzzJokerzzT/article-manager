@@ -2,6 +2,12 @@ import { getSize } from '../helpers';
 import { getVariant } from './helpers';
 import type { ButtonProps } from './types';
 
+/**
+ * Reusable Button component with multiple variants, colors, and sizes
+ * Supports accessibility features and consistent styling across the application
+ * @param props - Button component properties
+ * @returns JSX element representing a styled button
+ */
 export const Button = ({
   ariaLabel,
   children,

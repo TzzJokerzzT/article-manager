@@ -1,5 +1,19 @@
 import type { SelectProps } from './types';
 
+/**
+ * Componente Select reutilizable para selección de opciones.
+ * Renderiza un dropdown con opciones dinámicas y styling consistente.
+ *
+ * @param props - Propiedades del componente
+ * @param props.label - Texto del label
+ * @param props.value - Valor actualmente seleccionado
+ * @param props.onChange - Callback para cambios en la selección
+ * @param props.categories - Array de opciones disponibles
+ * @param props.title - Texto para la opción por defecto
+ * @param props.required - Si el campo es obligatorio (por defecto true)
+ * @param props.id - ID único del select (por defecto 'category')
+ * @returns Componente de select con label y opciones
+ */
 export const Select = ({
   label,
   value,

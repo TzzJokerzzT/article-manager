@@ -10,13 +10,25 @@ import {
 } from '../../hooks';
 import type { ArticleCardProps } from './types';
 
+/**
+ * ArticleCard component displays an article with interactive features
+ * Includes rating, favoriting, and action buttons for edit/delete/view
+ * Memoized for optimal performance in lists
+ * @param props - ArticleCard component properties
+ * @returns JSX element representing an article card
+ */
 export const ArticleCard = memo(
   ({ article, onEdit, onDelete, onViewDetails }: ArticleCardProps) => {
+    /** Local state for user's current rating input */
     const [userRating, setUserRating] = useState<number>(0);
     const toggleFavorite = useToggleFavorite();
     const rateArticle = useRateArticle();
     const { data: rating } = useArticleRating(article.id);
 
+    /**
+     * Handles star rating clicks
+     * @param rating - Rating value (1-5)
+     */
     const handleRating = useCallback(
       (rating: number) => {
         setUserRating(rating);
@@ -25,6 +37,9 @@ export const ArticleCard = memo(
       [article.id, rateArticle]
     );
 
+    /**
+     * Handles favorite/unfavorite toggle
+     */
     const handleToggleFavorite = useCallback(() => {
       toggleFavorite.mutate({
         articleId: article.id,

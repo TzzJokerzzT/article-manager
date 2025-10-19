@@ -5,11 +5,20 @@ import { setTheme } from '@/application/store/uiSlice';
 import { Button } from '@/shared/components/Button/Button';
 import { MobileMenu } from '@/shared/components/MobileMenu/MobileMenu';
 
+/**
+ * Main layout component that wraps all pages with navigation and theme support
+ * @param children - React children to render in the main content area
+ * @returns JSX element with navigation bar and main content area
+ */
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  /** Current theme from Redux store */
   const theme = useAppSelector((state) => state.ui.theme);
   const dispatch = useAppDispatch();
 
+  /**
+   * Toggles between light and dark theme
+   */
   const toggleTheme = () => {
     dispatch(setTheme(theme === 'light' ? 'dark' : 'light'));
   };

@@ -1,5 +1,14 @@
 import type { ArticleFilterInputSearchProps } from './types';
 
+/**
+ * Campo de entrada para búsqueda de artículos por texto.
+ * Permite filtrar artículos por título y contenido.
+ *
+ * @param props - Propiedades del componente
+ * @param props.localFilters - Filtros locales con término de búsqueda
+ * @param props.onFilterChange - Callback para cambios en la búsqueda
+ * @returns Input de búsqueda con label
+ */
 export const ArticleFilterInputSearch = ({
   localFilters,
   onFilterChange,

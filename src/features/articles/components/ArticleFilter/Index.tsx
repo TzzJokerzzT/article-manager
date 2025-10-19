@@ -8,18 +8,40 @@ import { ArticleMinimumRating } from './ArticleMinimumRating';
 import { ArticleSubCategoryFilter } from './ArticleSubCategoryFilter';
 import type { ArticleFiltersProps } from './types';
 
+/**
+ * Componente principal de filtros para artículos.
+ * Integra múltiples filtros: búsqueda, categoría, subcategoría, rating mínimo.
+ * Maneja el estado local y sincroniza con el estado global de filtros.
+ *
+ * @param props - Propiedades del componente
+ * @param props.filters - Filtros actuales aplicados
+ * @param props.onFiltersChange - Callback para cambios en los filtros
+ * @returns Componente completo de filtros con todos los controles
+ */
 export const ArticleFiltersComponent = ({
   filters,
   onFiltersChange,
 }: ArticleFiltersProps) => {
+  /** Estado local de filtros para manejo inmediato de cambios */
   const [localFilters, setLocalFilters] = useState(filters);
 
-  const handleFilterChange = (key: keyof ArticleFilters, value: any) => {
+  /**
+   * Maneja cambios en filtros individuales.
+   * Resetea la página a 1 cuando cambia cualquier filtro.
+   */
+  const handleFilterChange = (
+    key: keyof ArticleFilters,
+    value: string | number | undefined
+  ) => {
     const newFilters = { ...localFilters, [key]: value, page: 1 };
     setLocalFilters(newFilters);
     onFiltersChange(newFilters);
   };
 
+  /**
+   * Maneja cambios específicos en el filtro de categoría.
+   * Limpia la subcategoría cuando cambia la categoría principal.
+   */
   const handleFilterCategoryChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -34,6 +56,10 @@ export const ArticleFiltersComponent = ({
     onFiltersChange(newFilters);
   };
 
+  /**
+   * Limpia todos los filtros aplicados.
+   * Mantiene la estructura base y resetea la paginación.
+   */
   const handlerClearFilters = () => {
     const resetFilters = {
       ...filters,
@@ -47,6 +73,7 @@ export const ArticleFiltersComponent = ({
     onFiltersChange(resetFilters);
   };
 
+  /** Categoría actualmente seleccionada para mostrar subcategorías */
   const selectedCategory = CATEGORIES.find(
     (cat) => cat.id === localFilters.categoryId
   );

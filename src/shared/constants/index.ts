@@ -1,3 +1,7 @@
+/**
+ * Pre-defined categories and subcategories for article organization
+ * Used for filtering and categorizing articles throughout the application
+ */
 export const CATEGORIES = [
   {
     id: 'tech',
@@ -38,8 +42,10 @@ export const CATEGORIES = [
   },
 ];
 
+/** Mock user ID for development and testing purposes */
 export const MOCK_USER_ID = 'user-1';
 
+/** API endpoint constants for future backend integration */
 export const API_ENDPOINTS = {
   ARTICLES: '/api/articles',
   CATEGORIES: '/api/categories',
@@ -47,6 +53,7 @@ export const API_ENDPOINTS = {
   FAVORITES: '/api/favorites',
 };
 
+/** localStorage keys for persisting data in the browser */
 export const STORAGE_KEYS = {
   FAVORITES: 'article_favorites',
   RATINGS: 'article_ratings',

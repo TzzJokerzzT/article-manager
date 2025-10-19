@@ -1,5 +1,15 @@
 import type { ArticleCategoryFilterProps } from './types';
 
+/**
+ * Filtro por categoría de artículos.
+ * Permite seleccionar una categoría específica o mostrar todas.
+ *
+ * @param props - Propiedades del componente
+ * @param props.localFilters - Filtros locales con categoría seleccionada
+ * @param props.onFilterChange - Callback para cambios en la categoría
+ * @param props.categories - Array de categorías disponibles
+ * @returns Select de categorías con opción "All Categories"
+ */
 export const ArticleCategoryFilter = ({
   localFilters,
   onFilterChange,

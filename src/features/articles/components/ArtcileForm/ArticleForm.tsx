@@ -7,8 +7,20 @@ import { CircleX } from 'lucide-react';
 import { useState, type FormEvent, memo, useCallback, useMemo } from 'react';
 import type { ArticleFormData, ArticleFormProps } from './types';
 
+/**
+ * Formulario para crear y editar artículos.
+ * Maneja validación, estado del formulario y gestión de etiquetas.
+ *
+ * @param props - Propiedades del componente
+ * @param props.initialData - Datos iniciales para prellenar el formulario
+ * @param props.onSubmit - Callback para manejar el envío del formulario
+ * @param props.onCancel - Callback para manejar la cancelación
+ * @param props.isLoading - Estado de carga durante el envío
+ * @returns Componente de formulario para artículos
+ */
 export const ArticleForm = memo(
   ({ initialData, onSubmit, onCancel, isLoading }: ArticleFormProps) => {
+    /** Estado del formulario inicializado con datos existentes o valores por defecto */
     const [formData, setFormData] = useState<ArticleFormData>({
       title: initialData?.title || '',
       content: initialData?.content || '',
@@ -19,8 +31,13 @@ export const ArticleForm = memo(
       tags: initialData?.tags || [],
     });
 
+    /** Estado para el input temporal de etiquetas */
     const [tagInput, setTagInput] = useState('');
 
+    /**
+     * Maneja el envío del formulario.
+     * Previene el comportamiento por defecto y ejecuta el callback onSubmit.
+     */
     const handleSubmit = useCallback(
       (e: FormEvent) => {
         e.preventDefault();
@@ -29,6 +46,10 @@ export const ArticleForm = memo(
       [onSubmit, formData]
     );
 
+    /**
+     * Añade una nueva etiqueta al artículo.
+     * Valida que la etiqueta no esté vacía y no sea duplicada.
+     */
     const addTag = useCallback(() => {
       if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
         setFormData({
@@ -39,6 +60,10 @@ export const ArticleForm = memo(
       }
     }, [tagInput, formData]);
 
+    /**
+     * Elimina una etiqueta específica del artículo.
+     * @param tagToRemove - La etiqueta a eliminar
+     */
     const removeTag = useCallback(
       (tagToRemove: string) => {
         setFormData({
@@ -49,6 +74,7 @@ export const ArticleForm = memo(
       [formData]
     );
 
+    /** Categoría seleccionada basada en el categoryId del formulario */
     const selectedCategory = useMemo(
       () => CATEGORIES.find((cat) => cat.id === formData.categoryId),
       [formData.categoryId]

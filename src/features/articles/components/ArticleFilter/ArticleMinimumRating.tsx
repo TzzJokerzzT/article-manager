@@ -1,5 +1,14 @@
 import type { ArticleMinimumRatingProps } from './types';
 
+/**
+ * Filtro por rating mínimo de artículos.
+ * Permite filtrar artículos que tengan al menos cierto número de estrellas.
+ *
+ * @param props - Propiedades del componente
+ * @param props.localFilters - Filtros locales con rating mínimo
+ * @param props.onFilterChange - Callback para cambios en el rating
+ * @returns Select con opciones de rating desde 1 a 5 estrellas
+ */
 export const ArticleMinimumRating = ({
   localFilters,
   onFilterChange,

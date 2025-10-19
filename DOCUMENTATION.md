@@ -11,8 +11,9 @@
 7. [Scripts Disponibles](#scripts-disponibles)
 8. [Testing](#testing)
 9. [Path Aliases](#path-aliases)
-10. [Componentes Principales](#componentes-principales)
-11. [Preguntas y Respuestas](#preguntas-y-respuestas)
+10. [Documentación del Código](#documentación-del-código)
+11. [Componentes Principales](#componentes-principales)
+12. [Preguntas y Respuestas](#preguntas-y-respuestas)
 
 ## Descripción General
 
@@ -496,6 +497,73 @@ import { Button } from '../../../shared/components/Button';
 import { Article } from '@types';
 import { Button } from '@components/Button';
 ```
+
+## Documentación del Código
+
+### Estándares JSDoc
+
+El proyecto implementa documentación completa usando **JSDoc** para mejorar la experiencia de desarrollo y mantenibilidad del código.
+
+#### Cobertura de Documentación
+
+**✅ Completamente Documentado:**
+
+- **Capa de Dominio**: Todas las interfaces y tipos tienen descripciones detalladas
+- **Capa de Infraestructura**: Todos los métodos de repositorios con parámetros y returns
+- **Capa de Aplicación**: Store de Redux, hooks personalizados y servicios
+- **Utilidades Compartidas**: Funciones utilitarias y constantes globales
+- **Componentes Core**: Layout, Button, y componentes principales
+
+#### Ejemplo de Documentación JSDoc
+
+````typescript
+/**
+ * Custom hook para obtener artículos con filtros aplicados.
+ * Implementa cache inteligente y refetch automático.
+ *
+ * @param filters - Filtros a aplicar en la búsqueda de artículos
+ * @param filters.category - Categoría específica para filtrar
+ * @param filters.subcategory - Subcategoría específica para filtrar
+ * @param filters.search - Término de búsqueda en título y contenido
+ * @param filters.minRating - Rating mínimo requerido (1-5)
+ * @param filters.page - Número de página para paginación
+ * @param filters.limit - Límite de artículos por página
+ * @returns Query object con data, loading, error states
+ *
+ * @example
+ * ```typescript
+ * const { data, isLoading, error } = useArticles({
+ *   category: 'tecnologia',
+ *   minRating: 4,
+ *   page: 1,
+ *   limit: 10
+ * });
+ * ```
+ */
+export const useArticles = (filters: ArticleFilters) => {
+  return useQuery({
+    queryKey: ['articles', filters],
+    queryFn: () => articleRepository.findAll(filters),
+    staleTime: 5 * 60 * 1000,
+  });
+};
+````
+
+#### Beneficios de la Documentación JSDoc
+
+1. **🔍 IntelliSense Mejorado**: Autocompletado detallado en VS Code
+2. **📖 Onboarding Rápido**: Nuevos desarrolladores entienden el código más rápido
+3. **🔧 Menos Errores**: Documentación de parámetros previene uso incorrecto
+4. **📚 Documentación Viva**: Se mantiene actualizada con el código
+5. **🎯 Mejores Refactors**: IDE puede sugerir cambios más precisos
+
+#### Estándares de Documentación
+
+- **Funciones**: Descripción, `@param` para cada parámetro, `@returns` para valor de retorno
+- **Interfaces**: Descripción de cada propiedad con tipos específicos
+- **Hooks**: Ejemplos de uso con `@example`
+- **Repositorios**: Documentación de errores posibles y casos edge
+- **Componentes**: Props principales y casos de uso
 
 ## Componentes Principales
 

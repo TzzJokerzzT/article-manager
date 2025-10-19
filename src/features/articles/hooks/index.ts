@@ -11,6 +11,12 @@ import {
 } from '../services';
 import type { ArticleFormData } from '../components/ArtcileForm/types';
 
+/**
+ * Hook to fetch articles with filtering and pagination
+ * Automatically enriches articles with favorite status
+ * @param filters - Filter and pagination parameters
+ * @returns React Query result with paginated articles
+ */
 export const useArticles = (filters: ArticleFilters) => {
   return useQuery<PaginatedResponse<Article>>({
     queryKey: ['articles', filters],
@@ -18,7 +24,7 @@ export const useArticles = (filters: ArticleFilters) => {
       const articlesResponse = await articleRepository.findAll(filters);
       const favorites = await favoriteRepository.getFavorites();
 
-      // Enrich articles with favorite status
+      // Enrich articles with favorite status for UI display
       const enrichedArticles = articlesResponse.data.map((article) => ({
         ...article,
         isFavorite: favorites.includes(article.id),
@@ -32,6 +38,11 @@ export const useArticles = (filters: ArticleFilters) => {
   });
 };
 
+/**
+ * Hook to fetch a single article by ID with favorite status
+ * @param id - Article ID to fetch
+ * @returns React Query result with article data or null
+ */
 export const useArticle = (id: string) => {
   return useQuery<Article | null>({
     queryKey: ['article', id],
@@ -49,6 +60,11 @@ export const useArticle = (id: string) => {
   });
 };
 
+/**
+ * Hook to create a new article
+ * Automatically invalidates articles cache on success
+ * @returns React Query mutation for creating articles
+ */
 export const useCreateArticle = () => {
   const queryClient = useQueryClient();
 
@@ -56,8 +72,8 @@ export const useCreateArticle = () => {
     mutationFn: (data: ArticleFormData) =>
       articleRepository.create({
         ...data,
-        rating: 0,
-        ratingCount: 0,
+        rating: 0, // Initialize with no rating
+        ratingCount: 0, // Initialize with no rating count
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['articles'] });
@@ -65,6 +81,11 @@ export const useCreateArticle = () => {
   });
 };
 
+/**
+ * Hook to update an existing article
+ * Invalidates both articles list and individual article cache
+ * @returns React Query mutation for updating articles
+ */
 export const useUpdateArticle = () => {
   const queryClient = useQueryClient();
 
@@ -78,6 +99,11 @@ export const useUpdateArticle = () => {
   });
 };
 
+/**
+ * Hook to delete an article
+ * Invalidates articles cache on success
+ * @returns React Query mutation for deleting articles
+ */
 export const useDeleteArticle = () => {
   const queryClient = useQueryClient();
 
@@ -89,6 +115,11 @@ export const useDeleteArticle = () => {
   });
 };
 
+/**
+ * Hook to rate an article
+ * Invalidates all related caches (articles, individual article, and rating)
+ * @returns React Query mutation for rating articles
+ */
 export const useRateArticle = () => {
   const queryClient = useQueryClient();
 
@@ -101,6 +132,7 @@ export const useRateArticle = () => {
       rating: number;
     }) => ratingRepository.rateArticle(articleId, rating),
     onSuccess: (_data, { articleId }) => {
+      // Invalidate all caches that depend on rating data
       queryClient.invalidateQueries({ queryKey: ['articles'] });
       queryClient.invalidateQueries({ queryKey: ['article', articleId] });
       queryClient.invalidateQueries({
@@ -110,6 +142,11 @@ export const useRateArticle = () => {
   });
 };
 
+/**
+ * Hook to toggle article favorite status with optimistic updates
+ * Provides immediate UI feedback while persisting changes
+ * @returns React Query mutation for toggling favorites
+ */
 export const useToggleFavorite = () => {
   const queryClient = useQueryClient();
 
@@ -126,17 +163,17 @@ export const useToggleFavorite = () => {
       }
       return favoriteRepository.addFavorite(articleId);
     },
-    // Optimistic updates
+    // Optimistic updates for immediate UI feedback
     onMutate: async ({ articleId, isFavorite }) => {
-      // Cancel outgoing refetches
+      // Cancel outgoing refetches to prevent race conditions
       await queryClient.cancelQueries({ queryKey: ['favorites'] });
       await queryClient.cancelQueries({ queryKey: ['articles'] });
       await queryClient.cancelQueries({ queryKey: ['article', articleId] });
 
-      // Snapshot previous values
+      // Snapshot previous values for rollback
       const previousFavorites = queryClient.getQueryData(['favorites']);
 
-      // Optimistically update favorites
+      // Optimistically update favorites cache
       queryClient.setQueryData(['favorites'], (old: string[] | undefined) => {
         const currentFavorites = old || [];
         if (isFavorite) {
@@ -149,7 +186,7 @@ export const useToggleFavorite = () => {
       return { previousFavorites };
     },
     onError: (_err, _variables, context) => {
-      // Rollback on error
+      // Rollback optimistic update on error
       if (context?.previousFavorites) {
         queryClient.setQueryData(['favorites'], context.previousFavorites);
       }
@@ -163,6 +200,11 @@ export const useToggleFavorite = () => {
   });
 };
 
+/**
+ * Hook to fetch rating statistics for a specific article
+ * @param articleId - ID of the article to get rating for
+ * @returns React Query result with rating data (average and count)
+ */
 export const useArticleRating = (articleId: string) => {
   return useQuery({
     queryKey: ['article-rating', articleId],
@@ -171,6 +213,10 @@ export const useArticleRating = (articleId: string) => {
   });
 };
 
+/**
+ * Hook to fetch all favorite article IDs for the current user
+ * @returns React Query result with array of favorite article IDs
+ */
 export const useFavorites = () => {
   return useQuery<string[]>({
     queryKey: ['favorites'],
