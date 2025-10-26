@@ -1,12 +1,13 @@
-import { MockArticleRepository } from '@/infrastructure/repositories/MockArticleRepository';
-import { MockRatingRepository } from '@/infrastructure/repositories/MockRatingRepository';
-import { MockFavoriteRepository } from '@/infrastructure/repositories/MockFavoriteRepository';
+import { DependencyContainer } from '@/configuration';
 
-/** Singleton instance of article repository for data operations */
-export const articleRepository = new MockArticleRepository();
+const container = DependencyContainer.getInstance();
 
-/** Singleton instance of rating repository for article ratings */
-export const ratingRepository = new MockRatingRepository();
+export const articleRepository = container.articleRepository;
+export const ratingRepository = container.ratingRepository;
+export const favoriteRepository = container.favoriteRepository;
 
-/** Singleton instance of favorite repository for user favorites */
-export const favoriteRepository = new MockFavoriteRepository();
+export const getArticlesUseCase = container.getArticlesUseCase;
+export const getArticleByIdUseCase = container.getArticleByIdUseCase;
+export const createArticleUseCase = container.createArticleUseCase;
+export const updateArticleUseCase = container.updateArticleUseCase;
+export const rateArticleUseCase = container.rateArticleUseCase;

@@ -10,6 +10,12 @@ import {
   favoriteRepository,
 } from '../services';
 import type { ArticleFormData } from '../components/ArtcileForm/types';
+import {
+  articleToDTO,
+  articlesToDTOs,
+  formDataToCreateData,
+  formDataToUpdateData,
+} from '@/adapters/mappers/articleMapper';
 
 /**
  * Hook to fetch articles with filtering and pagination
@@ -24,11 +30,13 @@ export const useArticles = (filters: ArticleFilters) => {
       const articlesResponse = await articleRepository.findAll(filters);
       const favorites = await favoriteRepository.getFavorites();
 
-      // Enrich articles with favorite status for UI display
-      const enrichedArticles = articlesResponse.data.map((article) => ({
-        ...article,
-        isFavorite: favorites.includes(article.id),
-      }));
+      // Convert domain entities to DTOs and enrich with favorite status
+      const enrichedArticles = articlesToDTOs(articlesResponse.data).map(
+        (article) => ({
+          ...article,
+          isFavorite: favorites.includes(article.id),
+        })
+      );
 
       return {
         ...articlesResponse,
@@ -51,8 +59,9 @@ export const useArticle = (id: string) => {
       if (!article) return null;
 
       const isFavorite = await favoriteRepository.isFavorite(id);
+      const articleDTO = articleToDTO(article);
       return {
-        ...article,
+        ...articleDTO,
         isFavorite,
       };
     },
@@ -70,11 +79,7 @@ export const useCreateArticle = () => {
 
   return useMutation({
     mutationFn: (data: ArticleFormData) =>
-      articleRepository.create({
-        ...data,
-        rating: 0, // Initialize with no rating
-        ratingCount: 0, // Initialize with no rating count
-      }),
+      articleRepository.create(formDataToCreateData(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['articles'] });
     },
@@ -90,8 +95,13 @@ export const useUpdateArticle = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Article> }) =>
-      articleRepository.update(id, data),
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Partial<ArticleFormData>;
+    }) => articleRepository.update(id, formDataToUpdateData(data)),
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['articles'] });
       queryClient.invalidateQueries({ queryKey: ['article', id] });

@@ -1,16 +1,16 @@
-# Documentación del Sistema de Gestión de Artículos
+# Sistema de Gestión de Artículos - Arquitectura Hexagonal
 
 ## Tabla de Contenidos
 
 1. [Descripción General](#descripción-general)
-2. [Tecnologías Utilizadas](#tecnologías-utilizadas)
-3. [Arquitectura del Proyecto](#arquitectura-del-proyecto)
-4. [Estructura de Directorios](#estructura-de-directorios)
-5. [Patrones de Diseño](#patrones-de-diseño)
-6. [Instalación y configuración del Proyecto](#instalación-y-configuración)
-7. [Scripts Disponibles](#scripts-disponibles)
-8. [Testing](#testing)
-9. [Path Aliases](#path-aliases)
+2. [✨ Últimas Actualizaciones](#últimas-actualizaciones)
+3. [Tecnologías Utilizadas](#tecnologías-utilizadas)
+4. [Arquitectura Hexagonal](#arquitectura-hexagonal)
+5. [Estructura de Directorios](#estructura-de-directorios)
+6. [Patrones de Diseño](#patrones-de-diseño)
+7. [Instalación y Configuración](#instalación-y-configuración)
+8. [Scripts Disponibles](#scripts-disponibles)
+9. [Testing](#testing)
 10. [Componentes Principales](#componentes-principales)
 11. [Preguntas y Respuestas](#preguntas-y-respuestas)
 
@@ -19,6 +19,48 @@
 [Demo de la aplicación](https://article-manager-steel.vercel.app/articles)
 
 ## ✨ Últimas Actualizaciones
+
+### 🏗️ **Refactorización a Arquitectura Hexagonal** (v3.0)
+
+**NUEVA IMPLEMENTACIÓN COMPLETA** - El proyecto ha sido completamente refactorizado hacia una arquitectura hexagonal pura con las siguientes mejoras:
+
+#### 🎯 **Arquitectura Hexagonal Pura**
+
+- **Domain Layer**: Entidades con Domain Driven Design, Value Objects y servicios de dominio
+- **Application Layer**: Use Cases específicos y puertos claramente definidos
+- **Infrastructure Layer**: Adaptadores para LocalStorage con implementación completa
+- **Dependency Injection**: Container de dependencias singleton para inyección limpia
+
+#### 🏛️ **Estructura de Capas Bien Definidas**
+
+```
+src/
+├── core/                    # 🎯 DOMINIO + APLICACIÓN
+│   ├── domain/             # Entidades, Value Objects, Servicios
+│   └── application/        # Use Cases, Puertos (Ports)
+├── adapters/               # 🔌 ADAPTADORES
+│   ├── mappers/           # Transformación de datos
+│   └── outbound/          # Persistencia (LocalStorage)
+├── configuration/         # 🏗️ INYECCIÓN DE DEPENDENCIAS
+└── features/              # 🎨 PRESENTACIÓN
+```
+
+#### 🎨 **Nuevas Capacidades**
+
+- **Clean Architecture**: Separación absoluta entre capas con inversión de dependencias
+- **Domain Entities**: Article, Category, Rating, Favorite como entidades de dominio
+- **Value Objects**: ArticleId, Pagination para encapsular lógica específica
+- **Use Cases**: CreateArticleUseCase, GetArticlesUseCase, RateArticleUseCase, etc.
+- **Mappers**: Transformación limpia entre dominio y persistencia
+- **Ports & Adapters**: Interfaces claramente definidas para todos los componentes
+
+#### 🔧 **Mejoras Técnicas**
+
+- **LocalStorage Repositories**: Implementación completa con persistencia real
+- **Domain Services**: ArticleRatingService para lógica de negocio compleja
+- **Dependency Container**: Patrón Singleton para manejo centralizado de dependencias
+- **Type Safety**: TypeScript estricto en todas las capas
+- **Testabilidad**: Arquitectura diseñada para testing comprehensivo
 
 ### 🎯 **Sistema de Favoritos Completo** (v2.0)
 
@@ -89,66 +131,83 @@ El Sistema de Gestión de Artículos es una aplicación web desarrollada con Rea
 
 - **Motion (Framer Motion) 12.23.24** - Animaciones y transiciones
 
-## Arquitectura del Proyecto
+## Arquitectura Hexagonal
 
-El proyecto sigue una **Arquitectura Hexagonal (Ports & Adapters)** combinada con un enfoque de **Vertical Slice Architecture**, organizando el código en capas bien definidas:
+El proyecto implementa una **Arquitectura Hexagonal pura (Ports & Adapters)** siguiendo principios de **Clean Architecture** y **Domain Driven Design**, organizando el código en capas bien definidas con inversión de dependencias completa:
 
-### Diagrama de Arquitectura del Sistema
+### Diagrama de Arquitectura Hexagonal
 
 ```mermaid
 graph TB
     %% User Interface Layer
     subgraph "🎨 PRESENTACIÓN"
-        UI[User Interface]
+        UI[React Components]
         PAGES[Pages Router]
-        COMPONENTS[React Components]
-        LAYOUT[Layout & Navigation]
+        HOOKS[Custom Hooks]
+        FEATURES[Feature Components]
     end
 
     %% Application Layer
     subgraph "⚡ APLICACIÓN"
-        HOOKS[Custom Hooks]
-        STORE[Redux Store]
-        QUERY[React Query]
-        SERVICES[Services Layer]
+        USECASES[Use Cases]
+        INPORTS[Inbound Ports]
+        OUTPORTS[Outbound Ports]
+        SERVICES[Domain Services]
     end
 
     %% Domain Layer
     subgraph "🏛️ DOMINIO"
-        TYPES[Domain Types]
-        INTERFACES[Repository Interfaces]
-        RULES[Business Rules]
+        ENTITIES[Entities]
+        VALUEOBJS[Value Objects]
+        DOMAINSERVICES[Domain Services]
+        BUSINESSRULES[Business Rules]
     end
 
     %% Infrastructure Layer
     subgraph "🔧 INFRAESTRUCTURA"
-        MOCK[Mock Repositories]
-        STORAGE[Local Storage]
-        FUTURE[Future: HTTP API]
+        REPOS[LocalStorage Repositories]
+        ADAPTERS[Outbound Adapters]
+        MAPPERS[Data Mappers]
+        STORAGE[LocalStorage]
     end
 
-    %% Data Flow
+    %% Dependency Injection
+    subgraph "🏗️ CONFIGURACIÓN"
+        DI[Dependency Container]
+    end
+
+    %% Data Flow - Inbound
     UI --> HOOKS
-    PAGES --> COMPONENTS
-    COMPONENTS --> HOOKS
-    HOOKS --> STORE
-    HOOKS --> QUERY
-    HOOKS --> SERVICES
-    SERVICES --> INTERFACES
-    INTERFACES --> MOCK
-    MOCK --> STORAGE
-    INTERFACES -.-> FUTURE
+    HOOKS --> USECASES
+    USECASES --> INPORTS
+    INPORTS --> ENTITIES
+    ENTITIES --> VALUEOBJS
+    ENTITIES --> DOMAINSERVICES
+
+    %% Data Flow - Outbound
+    USECASES --> OUTPORTS
+    OUTPORTS -.-> ADAPTERS
+    ADAPTERS --> REPOS
+    REPOS --> MAPPERS
+    MAPPERS --> STORAGE
+
+    %% Dependency Injection
+    DI --> USECASES
+    DI --> REPOS
+    DI --> SERVICES
 
     %% Styling
     classDef presentation fill:#e1f5fe
     classDef application fill:#f3e5f5
     classDef domain fill:#e8f5e8
     classDef infrastructure fill:#fff3e0
+    classDef config fill:#f0f0f0
 
-    class UI,PAGES,COMPONENTS,LAYOUT presentation
-    class HOOKS,STORE,QUERY,SERVICES application
-    class TYPES,INTERFACES,RULES domain
-    class MOCK,STORAGE,FUTURE infrastructure
+    class UI,PAGES,HOOKS,FEATURES presentation
+    class USECASES,INPORTS,OUTPORTS,SERVICES application
+    class ENTITIES,VALUEOBJS,DOMAINSERVICES,BUSINESSRULES domain
+    class REPOS,ADAPTERS,MAPPERS,STORAGE infrastructure
+    class DI config
 ```
 
 ### Diagrama de Flujo de Datos - Gestión de Estado
@@ -318,51 +377,224 @@ graph TB
 └─────────────────────────────────────┘
 ```
 
+### Implementación de Arquitectura Hexagonal
+
+#### 🏛️ **Capa de Dominio (Core Business Logic)**
+
+```typescript
+// Entidades con lógica de negocio encapsulada
+export class Article {
+  constructor(
+    public readonly id: string,
+    public readonly title: string,
+    public readonly content: string
+    // ... otros campos
+  ) {
+    this.validateTitle(title);
+    this.validateContent(content);
+  }
+
+  private validateTitle(title: string): void {
+    if (!title || title.trim().length < 3) {
+      throw new Error('El título debe tener al menos 3 caracteres');
+    }
+  }
+}
+
+// Value Objects para encapsular lógica específica
+export class ArticleId {
+  constructor(private readonly value: string) {
+    if (!this.isValid(value)) {
+      throw new Error('ArticleId inválido');
+    }
+  }
+}
+
+// Servicios de dominio para lógica compleja
+export class ArticleRatingService {
+  calculateAverageRating(ratings: Rating[]): number {
+    // Lógica de negocio pura
+  }
+}
+```
+
+#### ⚡ **Capa de Aplicación (Use Cases & Orchestration)**
+
+```typescript
+// Use Cases que orquestan el flujo de negocio
+export class CreateArticleUseCase {
+  constructor(private articleRepository: ArticleRepositoryPort) {}
+
+  async execute(command: CreateArticleCommand): Promise<Article> {
+    const article = new Article(
+      generateId(),
+      command.title,
+      command.content
+      // ...
+    );
+
+    return await this.articleRepository.save(article);
+  }
+}
+
+// Puertos (Interfaces) definidos por la aplicación
+export interface ArticleRepositoryPort {
+  save(article: Article): Promise<Article>;
+  findById(id: ArticleId): Promise<Article | null>;
+  findAll(filters: ArticleFilters): Promise<Article[]>;
+}
+```
+
+#### 🔌 **Capa de Infraestructura (Adapters)**
+
+```typescript
+// Adaptadores que implementan los puertos
+export class LocalStorageArticleRepository implements ArticleRepositoryPort {
+  async save(article: Article): Promise<Article> {
+    const data = ArticleMapper.toStorage(article);
+    localStorage.setItem(`article_${article.id}`, JSON.stringify(data));
+    return article;
+  }
+
+  async findAll(filters: ArticleFilters): Promise<Article[]> {
+    // Implementación específica de LocalStorage
+    const articles = this.loadFromStorage();
+    return articles.map((data) => ArticleMapper.toDomain(data));
+  }
+}
+
+// Mappers para transformación de datos
+export class ArticleMapper {
+  static toDomain(data: StorageArticleData): Article {
+    return new Article(
+      data.id,
+      data.title,
+      data.content
+      // ...
+    );
+  }
+
+  static toStorage(article: Article): StorageArticleData {
+    return {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      // ...
+    };
+  }
+}
+```
+
+#### 🏗️ **Inyección de Dependencias**
+
+```typescript
+export class DependencyContainer {
+  private static instance: DependencyContainer;
+
+  public readonly articleRepository: LocalStorageArticleRepository;
+  public readonly createArticleUseCase: CreateArticleUseCase;
+  // ... otros servicios
+
+  private constructor() {
+    // Instanciar adaptadores
+    this.articleRepository = new LocalStorageArticleRepository();
+
+    // Inyectar dependencias en use cases
+    this.createArticleUseCase = new CreateArticleUseCase(
+      this.articleRepository
+    );
+  }
+
+  public static getInstance(): DependencyContainer {
+    if (!DependencyContainer.instance) {
+      DependencyContainer.instance = new DependencyContainer();
+    }
+    return DependencyContainer.instance;
+  }
+}
+```
+
 ### Principios de Diseño
 
-1. **Inversión de Dependencias**: El dominio define interfaces que la infraestructura implementa
-2. **Separación de Responsabilidades**: Cada capa tiene una responsabilidad específica
-3. **Vertical Slices**: Funcionalidades agrupadas por dominio (articles, categories)
-4. **Testabilidad**: Arquitectura que facilita el testing en todos los niveles
+1. **Inversión de Dependencias**: Los use cases definen interfaces que la infraestructura implementa
+2. **Separación de Responsabilidades**: Cada capa tiene una responsabilidad específica y bien definida
+3. **Domain Driven Design**: El dominio encapsula toda la lógica de negocio
+4. **Ports & Adapters**: Interfaces (puertos) y implementaciones (adaptadores) completamente desacopladas
+5. **Testabilidad**: Arquitectura diseñada para facilitar el testing en todos los niveles
+6. **Single Responsibility**: Cada clase y módulo tiene una única razón para cambiar
 
 ## Estructura de Directorios
 
 ```
 src/
-├── application/           # Capa de Aplicación
-│   ├── hooks/            # Redux hooks personalizados
-│   ├── store/            # Configuración de Redux
-│   └── queryClient.ts    # Configuración React Query
+├── 🎯 core/                     # NÚCLEO DE LA APLICACIÓN
+│   ├── domain/                 # 🏛️ CAPA DE DOMINIO
+│   │   ├── entities/          # Entidades de negocio
+│   │   │   ├── Article.ts
+│   │   │   ├── Category.ts
+│   │   │   ├── Rating.ts
+│   │   │   └── Favorite.ts
+│   │   ├── value-objects/     # Value Objects
+│   │   │   ├── ArticleId.ts
+│   │   │   └── Pagination.ts
+│   │   ├── services/          # Servicios de dominio
+│   │   │   └── ArticleRatingService.ts
+│   │   └── index.ts
+│   │
+│   └── application/           # ⚡ CAPA DE APLICACIÓN
+│       ├── ports/            # Puertos (Interfaces)
+│       │   ├── inbound/      # Puertos de entrada
+│       │   │   ├── commands.ts
+│       │   │   └── queries.ts
+│       │   └── outbound/     # Puertos de salida
+│       │       └── repositories.ts
+│       ├── use-cases/        # Casos de uso
+│       │   ├── CreateArticleUseCase.ts
+│       │   ├── GetArticlesUseCase.ts
+│       │   ├── GetArticleByIdUseCase.ts
+│       │   ├── UpdateArticleUseCase.ts
+│       │   └── RateArticleUseCase.ts
+│       └── index.ts
 │
-├── domain/               # Capa de Dominio
-│   ├── repositories.ts   # Interfaces de repositorios
-│   └── types.ts         # Types del dominio
+├── 🔌 adapters/                # ADAPTADORES
+│   ├── mappers/               # Transformación de datos
+│   │   └── articleMapper.ts
+│   └── outbound/             # Adaptadores de salida
+│       └── persistence/      # Persistencia
+│           ├── LocalStorageArticleRepository.ts
+│           ├── LocalStorageRatingRepository.ts
+│           ├── LocalStorageFavoriteRepository.ts
+│           └── index.ts
 │
-├── infrastructure/       # Capa de Infraestructura
-│   └── repositories/    # Implementaciones de repositorios
-│       ├── MockArticleRepository.ts
-│       ├── MockRatingRepository.ts
-│       └── MockFavoriteRepository.ts
+├── 🏗️ configuration/           # CONFIGURACIÓN
+│   ├── DependencyContainer.ts  # Inyección de dependencias
+│   └── index.ts
 │
-├── features/            # Vertical Slices por Feature
+├── 🎨 features/               # FUNCIONALIDADES (UI)
 │   └── articles/
-│       ├── components/  # Componentes específicos
-│       ├── hooks/      # Hooks del dominio
-│       ├── services/   # Servicios e inyección
-│       └── __tests__/  # Tests del feature
+│       ├── components/       # Componentes específicos
+│       ├── hooks/           # Hooks de React Query
+│       ├── services/        # Integración con Use Cases
+│       └── __tests__/       # Tests del feature
 │
-├── pages/              # Páginas de la aplicación
+├── 📄 pages/                 # PÁGINAS
 │   ├── articles/
-│   └── categories/
-│   └── categories/
+│   ├── categories/
+│   └── favorites/
 │
-├── shared/             # Código compartido
-│   ├── components/     # Componentes reutilizables
-│   ├── constants/      # Constantes globales
-│   ├── types/         # Types compartidos
-│   └── utils/         # Utilidades
+├── 🔧 shared/                # CÓDIGO COMPARTIDO
+│   ├── components/          # Componentes reutilizables
+│   ├── constants/           # Constantes globales
+│   ├── types/              # Types compartidos
+│   └── utils/              # Utilidades
 │
-└── components/         # Layout y componentes de app
+├── 🏗️ application/           # ESTADO GLOBAL
+│   ├── store/              # Redux Store (UI State)
+│   ├── hooks/              # Redux Hooks
+│   └── queryClient.ts      # React Query Config
+│
+└── 🎨 components/            # LAYOUT
+    └── Layout.tsx
 ```
 
 ## Gestión de Estado: Redux vs React Query
@@ -564,55 +796,340 @@ VITE_APP_NAME=Article Manager           # Nombre de la aplicación
 
 ## Patrones de Diseño
 
-### 1. Repository Pattern
+### 1. **Hexagonal Architecture (Ports & Adapters)**
 
 ```typescript
-// Domain - Interface
-export interface ArticleRepository {
-  findAll(filters: ArticleFilters): Promise<PaginatedResponse<Article>>;
-  findById(id: string): Promise<Article | null>;
-  create(
-    article: Omit<Article, 'id' | 'createdAt' | 'updatedAt'>
-  ): Promise<Article>;
+// 🏛️ DOMINIO - Define el contrato (Puerto)
+export interface ArticleRepositoryPort {
+  save(article: Article): Promise<Article>;
+  findById(id: ArticleId): Promise<Article | null>;
 }
 
-// Infrastructure - Implementation
-export class MockArticleRepository implements ArticleRepository {
-  // Implementación específica
+// 🔌 INFRAESTRUCTURA - Implementa el contrato (Adaptador)
+export class LocalStorageArticleRepository implements ArticleRepositoryPort {
+  async save(article: Article): Promise<Article> {
+    // Implementación específica de LocalStorage
+  }
+}
+
+// ⚡ APLICACIÓN - Usa el puerto, no el adaptador
+export class CreateArticleUseCase {
+  constructor(private repository: ArticleRepositoryPort) {} // 👈 Inversión de dependencias
 }
 ```
 
-### 2. Dependency Injection
+### 2. **Domain Driven Design (DDD)**
 
 ```typescript
-// Services layer - Inyección de dependencias
-export const articleRepository = new MockArticleRepository();
-export const ratingRepository = new MockRatingRepository();
+// Entidades con lógica de negocio encapsulada
+export class Article {
+  constructor(
+    private readonly id: ArticleId,
+    private readonly title: string,
+    private readonly content: string
+  ) {
+    this.validateTitle(title); // 👈 Validación en el dominio
+    this.validateContent(content);
+  }
+
+  // Métodos de dominio
+  public rate(rating: number): void {
+    if (rating < 1 || rating > 5) {
+      throw new DomainError('Rating debe estar entre 1 y 5');
+    }
+    // Lógica de rating
+  }
+}
+
+// Value Objects para encapsular conceptos del dominio
+export class ArticleId {
+  constructor(private readonly value: string) {
+    if (!this.isValid(value)) {
+      throw new Error('ArticleId inválido');
+    }
+  }
+
+  public equals(other: ArticleId): boolean {
+    return this.value === other.value;
+  }
+}
 ```
 
-### 3. Custom Hooks Pattern
+### 3. **Use Case Pattern**
 
 ```typescript
-// Encapsulación de lógica de negocio
-export const useToggleFavorite = () => {
+// Cada caso de uso encapsula una funcionalidad específica
+export class CreateArticleUseCase {
+  constructor(
+    private articleRepository: ArticleRepositoryPort,
+    private categoryRepository: CategoryRepositoryPort
+  ) {}
+
+  async execute(command: CreateArticleCommand): Promise<Article> {
+    // 1. Validar comando
+    this.validateCommand(command);
+
+    // 2. Verificar que la categoría existe
+    const category = await this.categoryRepository.findById(command.categoryId);
+    if (!category) {
+      throw new CategoryNotFoundError(command.categoryId);
+    }
+
+    // 3. Crear entidad de dominio
+    const article = new Article(
+      new ArticleId(generateId()),
+      command.title,
+      command.content,
+      command.categoryId
+    );
+
+    // 4. Persistir
+    return await this.articleRepository.save(article);
+  }
+}
+```
+
+### 4. **Dependency Injection Container**
+
+```typescript
+// Patrón Singleton para gestión centralizada de dependencias
+export class DependencyContainer {
+  private static instance: DependencyContainer;
+
+  // Repositorios (Adaptadores)
+  public readonly articleRepository: LocalStorageArticleRepository;
+  public readonly categoryRepository: LocalStorageCategoryRepository;
+
+  // Use Cases (Aplicación)
+  public readonly createArticleUseCase: CreateArticleUseCase;
+  public readonly getArticlesUseCase: GetArticlesUseCase;
+
+  private constructor() {
+    // Crear adaptadores
+    this.articleRepository = new LocalStorageArticleRepository();
+    this.categoryRepository = new LocalStorageCategoryRepository();
+
+    // Inyectar dependencias en use cases
+    this.createArticleUseCase = new CreateArticleUseCase(
+      this.articleRepository,
+      this.categoryRepository
+    );
+
+    this.getArticlesUseCase = new GetArticlesUseCase(this.articleRepository);
+  }
+
+  public static getInstance(): DependencyContainer {
+    if (!DependencyContainer.instance) {
+      DependencyContainer.instance = new DependencyContainer();
+    }
+    return DependencyContainer.instance;
+  }
+}
+```
+
+### 5. **Mapper Pattern**
+
+```typescript
+// Transformación entre capas sin dependencias
+export class ArticleMapper {
+  // Dominio → Persistencia
+  static toStorage(article: Article): StorageArticleData {
+    return {
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      author: article.author,
+      categoryId: article.categoryId,
+      tags: article.tags,
+      rating: article.rating,
+      createdAt: article.createdAt.toISOString(),
+      updatedAt: article.updatedAt.toISOString(),
+    };
+  }
+
+  // Persistencia → Dominio
+  static toDomain(data: StorageArticleData): Article {
+    return new Article(
+      data.id,
+      data.title,
+      data.content,
+      data.author,
+      data.categoryId,
+      data.tags,
+      data.rating,
+      new Date(data.createdAt),
+      new Date(data.updatedAt)
+    );
+  }
+
+  // Dominio → API Response
+  static toResponse(article: Article): ArticleResponse {
+    return {
+      id: article.id,
+      title: article.title,
+      summary: article.summary,
+      author: article.author,
+      // Solo los campos necesarios para la UI
+    };
+  }
+}
+```
+
+### 6. **Custom Hooks Pattern (React Integration)**
+
+```typescript
+// Integración limpia entre React y Use Cases
+export const useCreateArticle = () => {
+  const container = DependencyContainer.getInstance();
+
   return useMutation({
-    mutationFn: async ({ articleId, isFavorite }: ToggleFavoriteParams) => {
-      // Lógica de negocio
+    mutationFn: async (command: CreateArticleCommand) => {
+      return await container.createArticleUseCase.execute(command);
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['articles']);
+    },
+  });
+};
+
+export const useArticles = (filters: ArticleFilters) => {
+  const container = DependencyContainer.getInstance();
+
+  return useQuery({
+    queryKey: ['articles', filters],
+    queryFn: () => container.getArticlesUseCase.execute({ filters }),
+    staleTime: 5 * 60 * 1000,
   });
 };
 ```
 
-### 4. Component Composition
+### 7. **Component Composition**
 
 ```typescript
-// Componentes compuestos y reutilizables
+// Componentes compuestos y reutilizables en la capa de presentación
 <ArticleFilter>
   <ArticleCategoryFilter />
   <ArticleMinimumRating />
   <ArticleFiltersInputSearch />
 </ArticleFilter>
 ```
+
+## Beneficios de la Arquitectura Hexagonal
+
+### 🎯 **Separación de Responsabilidades Clara**
+
+- **Dominio**: Lógica de negocio pura, sin dependencias externas
+- **Aplicación**: Orquestación de casos de uso y coordinación
+- **Infraestructura**: Implementaciones específicas de tecnología
+- **Presentación**: UI y interacción con el usuario
+
+### 🔄 **Intercambiabilidad de Adaptadores**
+
+```typescript
+// Desarrollo: LocalStorage
+const articleRepo = new LocalStorageArticleRepository();
+
+// Producción: API HTTP
+const articleRepo = new HttpArticleRepository(apiUrl);
+
+// Testing: In-Memory
+const articleRepo = new InMemoryArticleRepository();
+
+// El código de aplicación no cambia
+const useCase = new CreateArticleUseCase(articleRepo);
+```
+
+### 🧪 **Testabilidad Superior**
+
+```typescript
+// Test unitario de Use Case con mock
+describe('CreateArticleUseCase', () => {
+  it('should create article successfully', async () => {
+    // Arrange
+    const mockRepo = new MockArticleRepository();
+    const useCase = new CreateArticleUseCase(mockRepo);
+
+    // Act
+    const result = await useCase.execute(command);
+
+    // Assert
+    expect(result).toBeInstanceOf(Article);
+    expect(mockRepo.savedArticles).toHaveLength(1);
+  });
+});
+
+// Test de integración con LocalStorage real
+describe('LocalStorageArticleRepository', () => {
+  it('should persist and retrieve articles', async () => {
+    const repo = new LocalStorageArticleRepository();
+    const article = new Article(/*...*/);
+
+    await repo.save(article);
+    const retrieved = await repo.findById(article.id);
+
+    expect(retrieved).toEqual(article);
+  });
+});
+```
+
+### 📦 **Independencia de Framework**
+
+- **React**: Actual implementación de UI
+- **Vue/Angular**: Se puede cambiar sin afectar el core
+- **React Native**: Reutilizar toda la lógica de negocio
+- **Backend**: Los Use Cases pueden ejecutarse en servidor
+
+### 🚀 **Evolución y Escalabilidad**
+
+```typescript
+// Fácil agregar nuevas funcionalidades
+export class ShareArticleUseCase {
+  constructor(
+    private articleRepo: ArticleRepositoryPort,
+    private emailService: EmailServicePort, // Nuevo puerto
+    private socialMedia: SocialMediaPort // Nuevo puerto
+  ) {}
+}
+
+// Implementaciones específicas
+export class EmailAdapter implements EmailServicePort {
+  /*...*/
+}
+export class TwitterAdapter implements SocialMediaPort {
+  /*...*/
+}
+```
+
+### 🔒 **Principios SOLID Aplicados**
+
+- **S**: Cada clase tiene una responsabilidad única
+- **O**: Abierto para extensión, cerrado para modificación
+- **L**: Polimorfismo a través de interfaces
+- **I**: Interfaces específicas y segregadas
+- **D**: Inversión de dependencias completa
+
+### 💡 **Beneficios Prácticos**
+
+#### Para Desarrolladores:
+
+- 🎯 **Código más limpio**: Separación clara de responsabilidades
+- 🔍 **Fácil debugging**: Cada capa es independiente
+- 📝 **Mejor documentación**: Interfaces claras como contratos
+- 🧪 **Testing simple**: Mock fácil de cualquier dependencia
+
+#### Para el Negocio:
+
+- 🚀 **Desarrollo más rápido**: Cambios en una capa no afectan otras
+- 💰 **Menor costo de mantenimiento**: Código más fácil de entender
+- 🔄 **Flexibilidad tecnológica**: Cambiar tecnologías sin reescribir todo
+- 📈 **Escalabilidad**: Fácil agregar nuevas funcionalidades
+
+#### Para el Proyecto:
+
+- 🏗️ **Arquitectura sostenible**: Preparada para crecer
+- 👥 **Trabajo en equipo**: Diferentes equipos pueden trabajar en paralelo
+- 🔧 **Mantenibilidad**: Fácil localizar y arreglar problemas
+- 📚 **Conocimiento**: Arquitectura estándar de la industria
 
 ## Instalación y Configuración
 
