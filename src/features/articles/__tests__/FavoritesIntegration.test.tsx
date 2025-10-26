@@ -6,12 +6,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '@/application/store';
 import { FavoritesPage } from '@/pages/favorites/FavoritesPage';
-import { MockFavoriteRepository } from '@/infrastructure/repositories/MockFavoriteRepository';
-import { MockArticleRepository } from '@/infrastructure/repositories/MockArticleRepository';
-
-// Mock repositories
-const mockFavoriteRepo = new MockFavoriteRepository();
-const mockArticleRepo = new MockArticleRepository();
+import {
+  favoriteRepository,
+  articleRepository,
+} from '@/features/articles/services';
 
 // Create test wrapper component
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -32,9 +30,23 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 describe('Favorites Integration', () => {
-  beforeEach(() => {
-    // Clear localStorage before each test
+  beforeEach(async () => {
+    // Clear localStorage before each test to ensure clean state
     localStorage.clear();
+
+    // Force clear all favorites by directly manipulating localStorage
+    // This ensures we start with a truly empty state
+    localStorage.removeItem('favorites');
+
+    // Also clear any cached data by getting fresh repositories
+    const favorites = await favoriteRepository.getFavorites();
+    for (const favoriteId of favorites) {
+      await favoriteRepository.removeFavorite(favoriteId);
+    }
+
+    // Double-check that favorites are actually cleared
+    const remainingFavorites = await favoriteRepository.getFavorites();
+    expect(remainingFavorites).toEqual([]);
   });
 
   it('should display empty state when no favorites exist', async () => {
@@ -56,11 +68,11 @@ describe('Favorites Integration', () => {
 
   it('should show favorite articles when they exist', async () => {
     // Add some articles first
-    const articles = await mockArticleRepo.findAll({ page: 1, limit: 5 });
+    const articles = await articleRepository.findAll({ page: 1, limit: 5 });
     const firstArticle = articles.data[0];
 
-    // Add article to favorites
-    await mockFavoriteRepo.addFavorite(firstArticle.id);
+    // Add article to favorites using the same repository the app uses
+    await favoriteRepository.addFavorite(firstArticle.id);
 
     render(
       <TestWrapper>
@@ -84,12 +96,18 @@ describe('Favorites Integration', () => {
   });
 
   it('should navigate to browse articles when clicking the button', async () => {
+    // Ensure no favorites exist to show empty state (this test should run on empty state)
     render(
       <TestWrapper>
         <FavoritesPage />
       </TestWrapper>
     );
 
+    await waitFor(() => {
+      expect(screen.getByText('My Favorite Articles')).toBeInTheDocument();
+    });
+
+    // Wait for the Browse Articles button to appear (only shows in empty state)
     await waitFor(() => {
       expect(screen.getByText('Browse Articles')).toBeInTheDocument();
     });
@@ -105,11 +123,11 @@ describe('Favorites Integration', () => {
 
   it('should handle multiple favorite articles', async () => {
     // Add multiple articles to favorites
-    const articles = await mockArticleRepo.findAll({ page: 1, limit: 5 });
+    const articles = await articleRepository.findAll({ page: 1, limit: 5 });
 
-    await mockFavoriteRepo.addFavorite(articles.data[0].id);
-    await mockFavoriteRepo.addFavorite(articles.data[1].id);
-    await mockFavoriteRepo.addFavorite(articles.data[2].id);
+    await favoriteRepository.addFavorite(articles.data[0].id);
+    await favoriteRepository.addFavorite(articles.data[1].id);
+    await favoriteRepository.addFavorite(articles.data[2].id);
 
     render(
       <TestWrapper>
