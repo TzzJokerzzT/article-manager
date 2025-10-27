@@ -5,7 +5,6 @@ import { MessageNotFound } from '@/features/category/component/Message/Message';
 import SubcategoryFilterButtons from '@/features/category/component/SubCategoryFilterButton/SubCategoryFilter';
 import { Animation } from '@/shared/components/Animation/Animation';
 import { EnterAnimation } from '@/shared/components/Animation/EnterAnimation';
-import { LoadingSpinner } from '@/shared/components/Loading';
 import { LoaderWithMessage } from '@/shared/components/Loading/LoaderWithMesssage';
 import { CATEGORIES } from '@/shared/constants';
 import type { ArticleFilters } from '@/shared/types';
