@@ -1,19 +1,14 @@
-import { useNavigate } from 'react-router-dom';
-import { useCreateArticle } from '@/features/articles/hooks';
+import { ArticleForm } from '@/features/articles/components/ArtcileForm/ArticleForm';
 import type { ArticleFormData } from '@/features/articles/components/ArtcileForm/types';
+import { useCreateArticle } from '@/features/articles/hooks';
+import { LeftEnterAnimation } from '@/shared/components/Animation/LeftEnterAnimation';
 import { Button } from '@/shared/components/Button/Button';
 import { Skeleton } from '@/shared/components/Loading';
 import { MoveLeft } from 'lucide-react';
-import { LeftEnterAnimation } from '@/shared/components/Animation/LeftEnterAnimation';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ArticleForm = lazy(() =>
-  import('@/features/articles/components/ArtcileForm/ArticleForm').then(
-    (module) => ({ default: module.ArticleForm })
-  )
-);
-
-export const CreateArticlePage = () => {
+const CreateArticlePage = () => {
   const navigate = useNavigate();
   const createArticle = useCreateArticle();
 
@@ -69,3 +64,5 @@ export const CreateArticlePage = () => {
     </div>
   );
 };
+
+export default CreateArticlePage;

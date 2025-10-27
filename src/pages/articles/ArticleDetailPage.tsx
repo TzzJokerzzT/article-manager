@@ -10,7 +10,7 @@ import { Button } from '@/shared/components/Button/Button';
 import { MoveLeft } from 'lucide-react';
 import { LeftEnterAnimation } from '@/shared/components/Animation/LeftEnterAnimation';
 
-export const ArticleDetailPage = () => {
+const ArticleDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: article, isLoading, error } = useArticle(id!);
@@ -149,3 +149,5 @@ export const ArticleDetailPage = () => {
     </div>
   );
 };
+
+export default ArticleDetailPage;

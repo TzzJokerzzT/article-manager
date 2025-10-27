@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 interface LoadingSpinnerProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 }
 
@@ -11,6 +11,7 @@ export const LoadingSpinner = memo(
       sm: 'h-6 w-6',
       md: 'h-12 w-12',
       lg: 'h-16 w-16',
+      xl: 'h-18 w-18',
     };
 
     return (

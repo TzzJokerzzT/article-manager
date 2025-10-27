@@ -20,6 +20,14 @@
 
 ## ✨ Últimas Actualizaciones
 
+### 🐛 **Corrección Bug Filtros de Categorías** (v2.1)
+
+- **Bug identificado**: Los filtros de categoría (technology, business, science) no se aplicaban inmediatamente
+- **Causa**: Falta de sincronización entre parámetros URL y estado local de filtros
+- **Solución**: Implementado `useEffect` para sincronizar automáticamente filtros cuando cambian los parámetros de la URL
+- **Mejora UX**: Los filtros ahora se aplican instantáneamente sin necesidad de navegación adicional
+- **Código actualizado**: `src/pages/categories/CategoriesPage.tsx` con sincronización automática de estado
+
 ### 🎯 **Sistema de Favoritos Completo** (v2.0)
 
 - **FavoritesPage**: Página dedicada para gestionar artículos favoritos con estado vacío elegante
@@ -1118,6 +1126,94 @@ const articleRepository = new InMemoryArticleRepository();
 ```
 
 La aplicación funciona igual independientemente de la implementación, demostrando la efectividad de la separación entre lógica de negocio y adaptadores.
+
+---
+
+# English Documentation - Article Management System
+
+## Latest Updates
+
+### 🐛 **Category Filters Bug Fix** (v2.1)
+
+- **Bug identified**: Category filters (technology, business, science) weren't applied immediately
+- **Root cause**: Missing synchronization between URL parameters and local filter state
+- **Solution**: Implemented `useEffect` to automatically sync filters when URL parameters change
+- **UX improvement**: Filters now apply instantly without requiring additional navigation
+- **Updated code**: `src/pages/categories/CategoriesPage.tsx` with automatic state synchronization
+
+### 🎯 **Complete Favorites System** (v2.0)
+
+- **FavoritesPage**: Dedicated page for managing favorite articles with elegant empty state
+- **Integrated navigation**: "Favorites" link in header with consistent navigation
+- **Real-time sync**: Optimistic state with React Query for better UX
+- **Persistence**: Favorites saved in LocalStorage with automatic synchronization
+- **Comprehensive tests**: 15/15 unit tests including favorites integration
+
+### 🔧 **Enhanced Form Validation** (v1.9)
+
+- **HTML5 Validation**: `required` attributes on all mandatory fields
+- **Improved accessibility**: Unique IDs and proper labels for screen readers
+- **E2E Testing**: Validation tests that verify form behavior
+- **Consistent UX**: Uniform validation across create and edit articles
+
+## Overview
+
+The Article Management System is a React web application that allows users to manage articles with features including:
+
+- ✅ Create, edit and delete articles
+- ⭐ Rating system (1-5 stars)
+- ❤️ **Mark articles as favorites** with dedicated page
+- 🔍 Advanced filtering by category, subcategory, minimum rating
+- 📱 Responsive interface with Tailwind CSS
+- 🧪 Complete testing (unit, integration, E2E)
+- ✅ **HTML5 form validation** for better user experience
+- 🎨 **Enhanced navigation** with consistent Button components
+
+## Architecture
+
+This project follows **Hexagonal Architecture (Ports & Adapters)** combined with **Vertical Slice Architecture**, organizing code in well-defined layers:
+
+### Architectural Benefits
+
+1. **🎯 Clear separation**: Domain, application, and infrastructure layers
+2. **⚡ Performance**: Optimized cache for server data with React Query
+3. **🔧 Maintainability**: Less boilerplate for server state management
+4. **🎭 Superior UX**: Automatic loading/error states
+5. **🧪 Testing**: Easier to mock server data
+6. **📈 Scalability**: Easy to add new endpoints
+
+## Bug Fix Details
+
+### Problem Description
+
+When clicking category filter buttons (technology, business, science), the filter wasn't applied immediately. Users had to navigate to an article and return for the filter to take effect.
+
+### Root Cause Analysis
+
+The issue was in `CategoriesPage.tsx` where the local filter state wasn't synchronizing with URL parameter changes. The `useArticles` hook was called with initial filters and didn't re-execute when URL parameters changed.
+
+### Solution Implementation
+
+Added a `useEffect` hook that monitors changes in `categoryId` and `subcategoryId` URL parameters and automatically updates the filter state:
+
+```typescript
+// Synchronize filters when URL parameters change
+useEffect(() => {
+  setFilters((prevFilters) => ({
+    ...prevFilters,
+    categoryId,
+    subcategoryId,
+    page: 1, // Reset page when category filters change
+  }));
+}, [categoryId, subcategoryId]);
+```
+
+### Impact
+
+- ✅ Immediate filter application when clicking category buttons
+- ✅ Improved user experience with instant feedback
+- ✅ Consistent behavior across all category navigation
+- ✅ Automatic page reset when filters change
 
 ---
 
