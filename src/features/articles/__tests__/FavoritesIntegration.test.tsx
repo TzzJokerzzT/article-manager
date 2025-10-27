@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '@/application/store';
-import { FavoritesPage } from '@/pages/favorites/FavoritesPage';
+import FavoritesPage from '@/pages/favorites/FavoritesPage';
 import { MockFavoriteRepository } from '@/infrastructure/repositories/MockFavoriteRepository';
 import { MockArticleRepository } from '@/infrastructure/repositories/MockArticleRepository';
 
