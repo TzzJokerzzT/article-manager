@@ -1,112 +1,124 @@
-# Documentación del Sistema de Gestión de Artículos
+# Article Management System / Sistema de Gestión de Artículos
 
-## Tabla de Contenidos
+<!-- Language Toggle -->
+<div align="center">
 
-1. [Descripción General](#descripción-general)
-2. [Tecnologías Utilizadas](#tecnologías-utilizadas)
-3. [Arquitectura del Proyecto](#arquitectura-del-proyecto)
-4. [Estructura de Directorios](#estructura-de-directorios)
-5. [Patrones de Diseño](#patrones-de-diseño)
-6. [Instalación y configuración del Proyecto](#instalación-y-configuración)
-7. [Scripts Disponibles](#scripts-disponibles)
-8. [Testing](#testing)
-9. [Path Aliases](#path-aliases)
-10. [Componentes Principales](#componentes-principales)
-11. [Preguntas y Respuestas](#preguntas-y-respuestas)
+🌐 **Select Language / Seleccionar Idioma**
 
-## Demo
+[![English](https://img.shields.io/badge/lang-English-blue.svg)](#english) [![Español](https://img.shields.io/badge/lang-Español-red.svg)](#español)
 
-[Demo de la aplicación](https://article-manager-steel.vercel.app/articles)
+</div>
 
-## ✨ Últimas Actualizaciones
+---
 
-### 🐛 **Corrección Bug Filtros de Categorías** (v2.1)
+# English
 
-- **Bug identificado**: Los filtros de categoría (technology, business, science) no se aplicaban inmediatamente
-- **Causa**: Falta de sincronización entre parámetros URL y estado local de filtros
-- **Solución**: Implementado `useEffect` para sincronizar automáticamente filtros cuando cambian los parámetros de la URL
-- **Mejora UX**: Los filtros ahora se aplican instantáneamente sin necesidad de navegación adicional
-- **Código actualizado**: `src/pages/categories/CategoriesPage.tsx` con sincronización automática de estado
+<div align="center">
 
-### 🎯 **Sistema de Favoritos Completo** (v2.0)
+![Article Manager Demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge)
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.1.7-646CFF?style=for-the-badge&logo=vite)
+![Tests](https://img.shields.io/badge/Tests-15%2F15%20✅-brightgreen?style=for-the-badge)
 
-- **FavoritesPage**: Página dedicada para gestionar artículos favoritos con estado vacío elegante
-- **Navegación integrada**: Link "Favorites" en el header con navegación consistente
-- **Sincronización en tiempo real**: Estado optimista con React Query para mejor UX
-- **Persistencia**: Favoritos guardados en LocalStorage con sincronización automática
-- **Tests comprehensivos**: 15/15 tests unitarios incluyendo integración de favoritos
+**[🚀 Live Demo](https://article-manager-steel.vercel.app/articles)**
 
-### 🔧 **Validación de Formularios Mejorada** (v1.9)
+</div>
 
-- **HTML5 Validation**: Atributos `required` en todos los campos obligatorios
-- **Accesibilidad mejorada**: IDs únicos y labels apropiados para lectores de pantalla
-- **E2E Testing**: Tests de validación que verifican comportamiento de formularios
-- **UX consistente**: Validación uniforme en crear y editar artículos
+## Table of Contents
 
-### 🎨 **Mejoras de UI/UX** (v1.8)
+1. [Overview](#overview)
+2. [Latest Updates](#latest-updates)
+3. [Technologies Used](#technologies-used)
+4. [Project Architecture](#project-architecture)
+5. [Directory Structure](#directory-structure)
+6. [State Management](#state-management)
+7. [Installation & Setup](#installation--setup)
+8. [Available Scripts](#available-scripts)
+9. [Testing Strategy](#testing-strategy)
+10. [Deployment](#deployment)
+11. [Key Components](#key-components)
+12. [FAQ](#faq)
 
-- **Componentes Button consistentes**: Navegación estandarizada con componentes reutilizables
-- **Animaciones optimizadas**: EnterAnimation aplicada a cards individuales para mejor performance
-- **Routing SPA**: Configuración Vercel para manejar rutas del lado del cliente
-- **Deployment listo**: Configuración completa para producción en Vercel
+## Overview
 
-## Descripción General
+The Article Management System is a modern React web application that allows users to manage articles with comprehensive features:
 
-El Sistema de Gestión de Artículos es una aplicación web desarrollada con React que permite a los usuarios gestionar artículos con funcionalidades como:
+- ✅ **CRUD Operations**: Create, edit, and delete articles
+- ⭐ **Rating System**: 1-5 star rating functionality
+- ❤️ **Favorites System**: Mark articles as favorites with dedicated page
+- 🔍 **Advanced Filtering**: Filter by category, subcategory, minimum rating, search
+- 📱 **Responsive Design**: Mobile-first approach with Tailwind CSS
+- 🧪 **Complete Testing**: Unit, integration, and E2E testing coverage
+- 🎨 **Modern UI/UX**: Smooth animations and intuitive navigation
+- 🔧 **HTML5 Validation**: Enhanced form validation for better UX
 
-- ✅ Crear, editar y eliminar artículos
-- ⭐ Sistema de calificaciones (1-5 estrellas)
-- ❤️ **Marcar artículos como favoritos** con página dedicada
-- 🔍 Filtrado avanzado por categoría, subcategoría, calificación mínima
-- 📱 Interfaz responsive con Tailwind CSS
-- 🧪 Testing completo (unitario, integración, E2E)
-- ✅ **Validación de formularios HTML5** para mejor experiencia de usuario
-- 🎨 **Navegación mejorada** con componentes Button consistentes
+## Latest Updates
 
-## Tecnologías Utilizadas
+### 🐛 **Category Filters Bug Fix** (v2.1)
 
-### Frontend Core
+- **Problem**: Category filters (technology, business, science) weren't applying immediately
+- **Root Cause**: Missing synchronization between URL parameters and local filter state
+- **Solution**: Implemented `useEffect` for automatic filter synchronization
+- **Impact**: Instant filter application with improved user experience
+- **Files Updated**: `src/pages/categories/CategoriesPage.tsx`
 
-- **React 19.1.1** - Framework principal
-- **TypeScript 5.9.3** - Tipado estático
-- **Vite 7.1.7** - Build tool y dev server
-- **Node.js 22**
+### 🎯 **Complete Favorites System** (v2.0)
 
-### Gestión de Paquetes
+- **FavoritesPage**: Dedicated page with elegant empty state design
+- **Navigation Integration**: Consistent "Favorites" link in header
+- **Real-time Sync**: Optimistic updates with React Query
+- **Persistence**: LocalStorage integration with automatic sync
+- **Test Coverage**: Comprehensive 15/15 unit tests including favorites
 
-- **Bun** (recomendado) - Runtime y gestor ultra-rápido
-- **npm** (alternativo) - Gestor tradicional de Node.js
+### 🔧 **Enhanced Form Validation** (v1.9)
 
-### Gestión de Estado
+- **HTML5 Validation**: Required attributes on mandatory fields
+- **Accessibility**: Unique IDs and proper labels for screen readers
+- **E2E Testing**: Form validation behavior verification
+- **UX Consistency**: Uniform validation across all forms
 
-- **Redux Toolkit 2.9.0** - Estado global (UI state)
-- **React Query 5.90.2** - Estado del servidor y cache
+## Technologies Used
 
-### Estilos
+### Core Frontend
 
-- **Tailwind CSS 4.1.14** - Framework de CSS
-- **Lucide React** - Iconografía
+- **React 19.1.1** - Modern UI library
+- **TypeScript 5.9.3** - Static type checking
+- **Vite 7.1.7** - Fast build tool and dev server
+- **Node.js 22** - Runtime environment
+
+### Package Management
+
+- **Bun** (recommended) - Ultra-fast runtime and package manager
+- **npm** (alternative) - Traditional Node.js package manager
+
+### State Management
+
+- **Redux Toolkit 2.9.0** - Global UI state management
+- **React Query 5.90.2** - Server state and caching
+
+### Styling & UI
+
+- **Tailwind CSS 4.1.14** - Utility-first CSS framework
+- **Lucide React** - Beautiful icons
+- **Motion (Framer Motion) 12.23.24** - Smooth animations
 
 ### Testing
 
-- **Vitest** - Testing unitario e integración
-- **Cypress** - Testing E2E
-- **Testing Library** - Utilidades de testing
+- **Vitest** - Unit and integration testing
+- **Cypress** - End-to-end testing
+- **Testing Library** - React component testing utilities
 
-### Animaciones
+## Project Architecture
 
-- **Motion (Framer Motion) 12.23.24** - Animaciones y transiciones
+This project implements **Hexagonal Architecture (Ports & Adapters)** combined with **Vertical Slice Architecture** for maximum maintainability and scalability.
 
-## Arquitectura del Proyecto
-
-El proyecto sigue una **Arquitectura Hexagonal (Ports & Adapters)** combinada con un enfoque de **Vertical Slice Architecture**, organizando el código en capas bien definidas:
-
-### Diagrama de Arquitectura del Sistema
+### Architecture Diagram
 
 ```mermaid
 graph TB
     %% User Interface Layer
-    subgraph "🎨 PRESENTACIÓN"
+    subgraph "🎨 PRESENTATION"
         UI[User Interface]
         PAGES[Pages Router]
         COMPONENTS[React Components]
@@ -114,7 +126,7 @@ graph TB
     end
 
     %% Application Layer
-    subgraph "⚡ APLICACIÓN"
+    subgraph "⚡ APPLICATION"
         HOOKS[Custom Hooks]
         STORE[Redux Store]
         QUERY[React Query]
@@ -122,14 +134,14 @@ graph TB
     end
 
     %% Domain Layer
-    subgraph "🏛️ DOMINIO"
+    subgraph "🏛️ DOMAIN"
         TYPES[Domain Types]
         INTERFACES[Repository Interfaces]
         RULES[Business Rules]
     end
 
     %% Infrastructure Layer
-    subgraph "🔧 INFRAESTRUCTURA"
+    subgraph "🔧 INFRASTRUCTURE"
         MOCK[Mock Repositories]
         STORAGE[Local Storage]
         FUTURE[Future: HTTP API]
@@ -146,166 +158,419 @@ graph TB
     INTERFACES --> MOCK
     MOCK --> STORAGE
     INTERFACES -.-> FUTURE
-
-    %% Styling
-    classDef presentation fill:#e1f5fe
-    classDef application fill:#f3e5f5
-    classDef domain fill:#e8f5e8
-    classDef infrastructure fill:#fff3e0
-
-    class UI,PAGES,COMPONENTS,LAYOUT presentation
-    class HOOKS,STORE,QUERY,SERVICES application
-    class TYPES,INTERFACES,RULES domain
-    class MOCK,STORAGE,FUTURE infrastructure
 ```
 
-### Diagrama de Flujo de Datos - Gestión de Estado
+### Architectural Layers
 
-```mermaid
-graph LR
-    %% UI Components
-    subgraph "🎨 UI COMPONENTS"
-        AC[ArticleCard]
-        AF[ArticleForm]
-        AL[ArticleList]
-        AP[ArticlePage]
-    end
-
-    %% Custom Hooks Layer
-    subgraph "🎯 CUSTOM HOOKS"
-        UA[useArticles]
-        UCA[useCreateArticle]
-        URF[useRateFavorite]
-        UTA[useToggleFavorite]
-    end
-
-    %% State Management
-    subgraph "📦 STATE MANAGEMENT"
-        RQ[React Query Cache]
-        RS[Redux Store]
-    end
-
-    %% Repositories
-    subgraph "💾 REPOSITORIES"
-        AR[Article Repository]
-        RR[Rating Repository]
-        FR[Favorite Repository]
-    end
-
-    %% Storage
-    LS[(Local Storage)]
-
-    %% Data Flow
-    AC --> UA
-    AF --> UCA
-    AL --> UA
-    AP --> UA
-    AC --> URF
-    AC --> UTA
-
-    UA --> RQ
-    UCA --> RQ
-    URF --> RQ
-    UTA --> RQ
-
-    AC --> RS
-    AL --> RS
-
-    RQ --> AR
-    RQ --> RR
-    RQ --> FR
-
-    AR --> LS
-    RR --> LS
-    FR --> LS
-
-    %% Styling
-    classDef ui fill:#e3f2fd
-    classDef hooks fill:#f1f8e9
-    classDef state fill:#fce4ec
-    classDef repo fill:#f3e5f5
-    classDef storage fill:#fff8e1
-
-    class AC,AF,AL,AP ui
-    class UA,UCA,URF,UTA hooks
-    class RQ,RS state
-    class AR,RR,FR repo
-    class LS storage
+```
+┌─────────────────────────────────────┐
+│           PRESENTATION              │
+│    (Components, Pages, Hooks)       │
+├─────────────────────────────────────┤
+│            APPLICATION              │
+│      (Services, Store, Query)       │
+├─────────────────────────────────────┤
+│             DOMAIN                  │
+│    (Types, Interfaces, Rules)       │
+├─────────────────────────────────────┤
+│         INFRASTRUCTURE             │
+│   (Repositories, External APIs)     │
+└─────────────────────────────────────┘
 ```
 
-### Diagrama de Componentes - Feature Articles
+## State Management
+
+### Redux vs React Query Strategy
+
+The project uses a **hybrid approach** that clearly separates responsibilities:
+
+#### 🏪 **Redux Toolkit - UI/Client State**
+
+**What Redux manages:**
+
+- ✅ UI configuration: theme, language, preferences
+- ✅ Navigation state: current page, breadcrumbs
+- ✅ Global states: loading spinners, notifications
+- ✅ Data that persists across pages: user configuration
+
+#### ⚡ **React Query - Server State**
+
+**What React Query manages:**
+
+- 📊 Server data: articles, ratings, favorites
+- 🔄 Intelligent caching: avoids unnecessary requests
+- ⚡ Synchronization: keeps data up-to-date
+- 🔄 Mutations: CREATE, UPDATE, DELETE with cache invalidation
+
+### Benefits of This Architecture
+
+1. **🎯 Clear Separation**: Each tool for its specific purpose
+2. **⚡ Performance**: Optimized cache for server data
+3. **🔧 Maintainability**: Less boilerplate for server state
+4. **🎭 Superior UX**: Automatic loading/error states
+5. **🧪 Testing**: Easier to mock server data
+6. **📈 Scalability**: Easy to add new endpoints
+
+## Directory Structure
+
+```
+src/
+├── application/           # Application Layer
+│   ├── hooks/            # Custom Redux hooks
+│   ├── store/            # Redux configuration
+│   └── queryClient.ts    # React Query setup
+│
+├── domain/               # Domain Layer
+│   ├── repositories.ts   # Repository interfaces
+│   └── types.ts         # Domain types
+│
+├── infrastructure/       # Infrastructure Layer
+│   └── repositories/    # Repository implementations
+│       ├── MockArticleRepository.ts
+│       ├── MockRatingRepository.ts
+│       └── MockFavoriteRepository.ts
+│
+├── features/            # Vertical Slices by Feature
+│   └── articles/
+│       ├── components/  # Feature-specific components
+│       ├── hooks/      # Domain hooks
+│       ├── services/   # Services & injection
+│       └── __tests__/  # Feature tests
+│
+├── pages/              # Application pages
+│   ├── articles/
+│   ├── categories/
+│   └── favorites/
+│
+├── shared/             # Shared code
+│   ├── components/     # Reusable components
+│   ├── constants/      # Global constants
+│   ├── types/         # Shared types
+│   └── utils/         # Utilities
+│
+└── components/         # Layout & app components
+```
+
+## Installation & Setup
+
+### System Requirements
+
+- **Node.js 22** - Required runtime version
+- **Bun** (recommended) or **npm** - Package manager
+
+### Installation Process
+
+1. **Install Node.js version 22**
+   - Download from [nodejs.org](https://nodejs.org/)
+   - Verify installation: `node --version`
+
+2. **Install dependencies**
+
+   ```bash
+   # With Bun (recommended)
+   bun install
+
+   # With npm (alternative)
+   npm install
+   ```
+
+3. **Run the project**
+
+   ```bash
+   # With Bun
+   bun run dev
+
+   # With npm
+   npm run dev
+   ```
+
+   The application will be available at `http://localhost:5173`
+
+## Available Scripts
+
+### With Bun (Recommended)
+
+```bash
+# Development
+bun dev              # Development server
+bun run build        # Production build
+bun run preview      # Preview build
+
+# Code Quality
+bun run lint         # ESLint
+bun run lint:fix     # Auto-fix
+bun run format       # Prettier formatting
+
+# Testing
+bun test             # Unit tests (watch mode)
+bun run test:run     # Unit tests (single run)
+bun run test:ui      # Vitest UI
+bun run cypress:open # Cypress interactive
+bun run cypress:run  # Cypress headless
+```
+
+### With npm (Alternative)
+
+```bash
+# Development
+npm run dev          # Development server
+npm run build        # Production build
+npm run preview      # Preview build
+
+# Testing
+npm run test         # Unit tests (watch mode)
+npm run test:run     # Unit tests (single run)
+npm run cypress:open # Cypress interactive
+npm run cypress:run  # Cypress headless
+```
+
+## Testing Strategy
+
+### Test Coverage: 15/15 ✅
+
+#### 1. Unit Tests (Vitest + Testing Library)
+
+```typescript
+describe('ArticleCard', () => {
+  test('displays article information correctly', () => {
+    render(<ArticleCard article={mockArticle} />);
+    expect(screen.getByText(mockArticle.title)).toBeInTheDocument();
+  });
+});
+```
+
+#### 2. Integration Tests
+
+```typescript
+describe('FavoritesIntegration', () => {
+  test('should toggle favorite and sync with server state', async () => {
+    // Complete functionality testing
+  });
+});
+```
+
+#### 3. E2E Tests (Cypress)
+
+```typescript
+describe('Article Management Happy Path', () => {
+  it('should complete full article lifecycle', () => {
+    cy.visit('/articles');
+    cy.get('[data-testid="create-article"]').click();
+    // Complete user flow testing
+  });
+});
+```
+
+## Deployment
+
+### Vercel Configuration
+
+The project is deployed on **Vercel** with SPA optimization:
+
+```json
+// vercel.json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+**Benefits:**
+
+- ✅ Client-side routing support
+- ✅ Page refresh works on all routes
+- ✅ 404 prevention for SPA routes
+- ✅ Global CDN distribution
+
+## Key Components
+
+### ArticleCard
+
+- **Location**: `src/features/articles/components/ArticleCard/`
+- **Features**: Rating, favorites, edit, delete actions
+
+### ArticleForm
+
+- **Location**: `src/features/articles/components/ArticleForm/`
+- **Features**: Create/edit articles with TypeScript validation
+
+### FavoritesPage
+
+- **Location**: `src/pages/favorites/FavoritesPage.tsx`
+- **Features**: Dedicated favorites page with elegant empty state
+
+### Layout
+
+- **Location**: `src/components/Layout.tsx`
+- **Features**: Consistent navigation with responsive design
+
+## FAQ
+
+### Why Hexagonal Architecture?
+
+**Benefits:**
+
+- 🎯 **Clear separation** between business logic and external concerns
+- 🔄 **Easy testing** with mockable dependencies
+- 📦 **Technology independence** - can swap implementations
+- 🚀 **Maintainability** - changes isolated to specific layers
+
+### Why Redux + React Query?
+
+**Complementary strengths:**
+
+- Redux excels at UI state that doesn't require server sync
+- React Query excels at server data with intelligent caching
+- Together they provide optimal performance and developer experience
+
+---
+
+# Español
+
+<div align="center">
+
+![Article Manager Demo](https://img.shields.io/badge/Demo-En%20Vivo-brightgreen?style=for-the-badge)
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.1.7-646CFF?style=for-the-badge&logo=vite)
+![Pruebas](https://img.shields.io/badge/Pruebas-15%2F15%20✅-brightgreen?style=for-the-badge)
+
+**[🚀 Demo en Vivo](https://article-manager-steel.vercel.app/articles)**
+
+</div>
+
+## Tabla de Contenidos
+
+1. [Descripción General](#descripción-general)
+2. [Últimas Actualizaciones](#últimas-actualizaciones)
+3. [Tecnologías Utilizadas](#tecnologías-utilizadas-1)
+4. [Arquitectura del Proyecto](#arquitectura-del-proyecto-1)
+5. [Estructura de Directorios](#estructura-de-directorios-1)
+6. [Gestión de Estado](#gestión-de-estado-1)
+7. [Instalación y Configuración](#instalación-y-configuración)
+8. [Scripts Disponibles](#scripts-disponibles-1)
+9. [Estrategia de Testing](#estrategia-de-testing-1)
+10. [Despliegue](#despliegue-1)
+11. [Componentes Principales](#componentes-principales-1)
+12. [Preguntas Frecuentes](#preguntas-frecuentes)
+
+## Descripción General
+
+El Sistema de Gestión de Artículos es una aplicación web moderna desarrollada con React que permite a los usuarios gestionar artículos con funcionalidades completas:
+
+- ✅ **Operaciones CRUD**: Crear, editar y eliminar artículos
+- ⭐ **Sistema de Calificaciones**: Funcionalidad de calificación de 1-5 estrellas
+- ❤️ **Sistema de Favoritos**: Marcar artículos como favoritos con página dedicada
+- 🔍 **Filtrado Avanzado**: Filtrar por categoría, subcategoría, calificación mínima, búsqueda
+- 📱 **Diseño Responsive**: Enfoque mobile-first con Tailwind CSS
+- 🧪 **Testing Completo**: Cobertura de pruebas unitarias, integración y E2E
+- 🎨 **UI/UX Moderno**: Animaciones suaves y navegación intuitiva
+- 🔧 **Validación HTML5**: Validación mejorada de formularios para mejor UX
+
+## Últimas Actualizaciones
+
+### 🐛 **Corrección Bug Filtros de Categorías** (v2.1)
+
+- **Problema**: Los filtros de categoría (technology, business, science) no se aplicaban inmediatamente
+- **Causa Raíz**: Falta de sincronización entre parámetros URL y estado local de filtros
+- **Solución**: Implementado `useEffect` para sincronización automática de filtros
+- **Impacto**: Aplicación instantánea de filtros con mejor experiencia de usuario
+- **Archivos Actualizados**: `src/pages/categories/CategoriesPage.tsx`
+
+### 🎯 **Sistema de Favoritos Completo** (v2.0)
+
+- **FavoritesPage**: Página dedicada con diseño elegante de estado vacío
+- **Integración de Navegación**: Link consistente "Favorites" en el header
+- **Sincronización en Tiempo Real**: Actualizaciones optimistas con React Query
+- **Persistencia**: Integración con LocalStorage y sincronización automática
+- **Cobertura de Pruebas**: 15/15 pruebas unitarias comprensivas incluyendo favoritos
+
+### 🔧 **Validación de Formularios Mejorada** (v1.9)
+
+- **Validación HTML5**: Atributos required en campos obligatorios
+- **Accesibilidad**: IDs únicos y labels apropiados para lectores de pantalla
+- **Testing E2E**: Verificación del comportamiento de validación de formularios
+- **Consistencia UX**: Validación uniforme en todos los formularios
+
+## Tecnologías Utilizadas
+
+### Frontend Core
+
+- **React 19.1.1** - Biblioteca UI moderna
+- **TypeScript 5.9.3** - Verificación de tipos estáticos
+- **Vite 7.1.7** - Herramienta de build rápida y servidor dev
+- **Node.js 22** - Entorno de ejecución
+
+### Gestión de Paquetes
+
+- **Bun** (recomendado) - Runtime y gestor de paquetes ultra-rápido
+- **npm** (alternativo) - Gestor de paquetes tradicional de Node.js
+
+### Gestión de Estado
+
+- **Redux Toolkit 2.9.0** - Gestión de estado UI global
+- **React Query 5.90.2** - Estado del servidor y caché
+
+### Estilos y UI
+
+- **Tailwind CSS 4.1.14** - Framework CSS utility-first
+- **Lucide React** - Iconos hermosos
+- **Motion (Framer Motion) 12.23.24** - Animaciones suaves
+
+### Testing
+
+- **Vitest** - Pruebas unitarias e integración
+- **Cypress** - Pruebas end-to-end
+- **Testing Library** - Utilidades para pruebas de componentes React
+
+## Arquitectura del Proyecto
+
+Este proyecto implementa **Arquitectura Hexagonal (Ports & Adapters)** combinada con **Vertical Slice Architecture** para máxima mantenibilidad y escalabilidad.
+
+### Diagrama de Arquitectura
 
 ```mermaid
 graph TB
-    %% Pages
-    subgraph "📄 PAGES"
-        ALP[ArticlesPage]
-        ADP[ArticleDetailPage]
-        CAP[CreateArticlePage]
-        EAP[EditArticlePage]
+    %% User Interface Layer
+    subgraph "🎨 PRESENTACIÓN"
+        UI[Interfaz de Usuario]
+        PAGES[Enrutador de Páginas]
+        COMPONENTS[Componentes React]
+        LAYOUT[Layout y Navegación]
     end
 
-    %% Article Feature Components
-    subgraph "🎨 ARTICLES FEATURE"
-        AC[ArticleCard]
-        AF[ArticleForm]
-
-        subgraph "🔍 FILTERS"
-            ACF[CategoryFilter]
-            ASF[SubCategoryFilter]
-            AMR[MinimumRating]
-            AIS[InputSearch]
-            ACB[ClearButton]
-        end
-
-        PAG[Pagination]
+    %% Application Layer
+    subgraph "⚡ APLICACIÓN"
+        HOOKS[Hooks Personalizados]
+        STORE[Store Redux]
+        QUERY[React Query]
+        SERVICES[Capa de Servicios]
     end
 
-    %% Shared Components
-    subgraph "🔧 SHARED COMPONENTS"
-        BTN[Button]
-        FORM[Form]
-        SELECT[Select]
-        TAGS[Tags]
-        TEXTAREA[Textarea]
+    %% Domain Layer
+    subgraph "🏛️ DOMINIO"
+        TYPES[Tipos del Dominio]
+        INTERFACES[Interfaces de Repositorio]
+        RULES[Reglas de Negocio]
     end
 
-    %% Business Logic
-    subgraph "⚡ BUSINESS LOGIC"
-        AHOOKS[Article Hooks]
-        ASERVICES[Article Services]
+    %% Infrastructure Layer
+    subgraph "🔧 INFRAESTRUCTURA"
+        MOCK[Repositorios Mock]
+        STORAGE[Local Storage]
+        FUTURE[Futuro: API HTTP]
     end
 
-    %% Flow
-    ALP --> AC
-    ALP --> ACF
-    ALP --> PAG
-    ADP --> AC
-    CAP --> AF
-    EAP --> AF
-
-    AC --> BTN
-    AC --> TAGS
-    AF --> FORM
-    AF --> SELECT
-    AF --> TEXTAREA
-    AF --> BTN
-    ACF --> SELECT
-
-    AC --> AHOOKS
-    AF --> AHOOKS
-    AHOOKS --> ASERVICES
-
-    %% Styling
-    classDef pages fill:#e8eaf6
-    classDef features fill:#e0f2f1
-    classDef shared fill:#fdf2e9
-    classDef logic fill:#f3e5f5
-
-    class ALP,ADP,CAP,EAP pages
-    class AC,AF,ACF,ASF,AMR,AIS,ACB,PAG features
-    class BTN,FORM,SELECT,TAGS,TEXTAREA shared
-    class AHOOKS,ASERVICES logic
+    %% Data Flow
+    UI --> HOOKS
+    PAGES --> COMPONENTS
+    COMPONENTS --> HOOKS
+    HOOKS --> STORE
+    HOOKS --> QUERY
+    HOOKS --> SERVICES
+    SERVICES --> INTERFACES
+    INTERFACES --> MOCK
+    MOCK --> STORAGE
+    INTERFACES -.-> FUTURE
 ```
 
 ### Capas Arquitectónicas
@@ -326,25 +591,51 @@ graph TB
 └─────────────────────────────────────┘
 ```
 
-### Principios de Diseño
+## Gestión de Estado
 
-1. **Inversión de Dependencias**: El dominio define interfaces que la infraestructura implementa
-2. **Separación de Responsabilidades**: Cada capa tiene una responsabilidad específica
-3. **Vertical Slices**: Funcionalidades agrupadas por dominio (articles, categories)
-4. **Testabilidad**: Arquitectura que facilita el testing en todos los niveles
+### Estrategia Redux vs React Query
+
+El proyecto usa un **enfoque híbrido** que separa claramente las responsabilidades:
+
+#### 🏪 **Redux Toolkit - Estado UI/Cliente**
+
+**Lo que gestiona Redux:**
+
+- ✅ Configuración UI: tema, idioma, preferencias
+- ✅ Estado de navegación: página actual, breadcrumbs
+- ✅ Estados globales: spinners de carga, notificaciones
+- ✅ Datos que persisten entre páginas: configuración del usuario
+
+#### ⚡ **React Query - Estado del Servidor**
+
+**Lo que gestiona React Query:**
+
+- 📊 Datos del servidor: artículos, calificaciones, favoritos
+- 🔄 Caché inteligente: evita peticiones innecesarias
+- ⚡ Sincronización: mantiene datos actualizados
+- 🔄 Mutaciones: CREATE, UPDATE, DELETE con invalidación de caché
+
+### Beneficios de Esta Arquitectura
+
+1. **🎯 Separación Clara**: Cada herramienta para su propósito específico
+2. **⚡ Performance**: Caché optimizado para datos del servidor
+3. **🔧 Mantenibilidad**: Menos boilerplate para estado del servidor
+4. **🎭 UX Superior**: Estados de carga/error automáticos
+5. **🧪 Testing**: Más fácil mockear datos del servidor
+6. **📈 Escalabilidad**: Fácil agregar nuevos endpoints
 
 ## Estructura de Directorios
 
 ```
 src/
 ├── application/           # Capa de Aplicación
-│   ├── hooks/            # Redux hooks personalizados
-│   ├── store/            # Configuración de Redux
+│   ├── hooks/            # Hooks Redux personalizados
+│   ├── store/            # Configuración Redux
 │   └── queryClient.ts    # Configuración React Query
 │
 ├── domain/               # Capa de Dominio
 │   ├── repositories.ts   # Interfaces de repositorios
-│   └── types.ts         # Types del dominio
+│   └── types.ts         # Tipos del dominio
 │
 ├── infrastructure/       # Capa de Infraestructura
 │   └── repositories/    # Implementaciones de repositorios
@@ -352,286 +643,37 @@ src/
 │       ├── MockRatingRepository.ts
 │       └── MockFavoriteRepository.ts
 │
-├── features/            # Vertical Slices por Feature
+├── features/            # Slices Verticales por Feature
 │   └── articles/
-│       ├── components/  # Componentes específicos
+│       ├── components/  # Componentes específicos del feature
 │       ├── hooks/      # Hooks del dominio
 │       ├── services/   # Servicios e inyección
-│       └── __tests__/  # Tests del feature
+│       └── __tests__/  # Pruebas del feature
 │
 ├── pages/              # Páginas de la aplicación
 │   ├── articles/
-│   └── categories/
-│   └── categories/
+│   ├── categories/
+│   └── favorites/
 │
 ├── shared/             # Código compartido
 │   ├── components/     # Componentes reutilizables
 │   ├── constants/      # Constantes globales
-│   ├── types/         # Types compartidos
+│   ├── types/         # Tipos compartidos
 │   └── utils/         # Utilidades
 │
 └── components/         # Layout y componentes de app
-```
-
-## Gestión de Estado: Redux vs React Query
-
-### Separación de Responsabilidades
-
-Este proyecto implementa una **estrategia híbrida** de gestión de estado que separa claramente las responsabilidades entre Redux Toolkit y React Query:
-
-#### 🏪 **Redux Toolkit - Estado de la UI/Cliente**
-
-```typescript
-// src/application/store/uiSlice.ts
-interface UIState {
-  theme: 'light' | 'dark'; // Tema seleccionado por el usuario
-  isLoading: boolean; // Estados de carga globales
-  error: string | null; // Errores globales de la UI
-  currentPage: string; // Página actual para navegación
-}
-```
-
-**¿Qué maneja Redux?**
-
-- ✅ **Configuración de UI**: tema, idioma, preferencias
-- ✅ **Estado de navegación**: página actual, breadcrumbs
-- ✅ **Estados globales**: loading spinners, notificaciones
-- ✅ **Datos que persisten entre páginas**: configuración del usuario
-
-**¿Por qué Redux para estos datos?**
-
-- 🎯 **Inmediatez**: Cambios instantáneos sin llamadas al servidor
-- 🔄 **Persistencia**: Se mantiene durante toda la sesión
-- 🌍 **Acceso global**: Cualquier componente puede acceder
-- 📱 **Estado de UI**: No depende de datos del servidor
-
-#### ⚡ **React Query - Estado del Servidor**
-
-```typescript
-// src/features/articles/hooks/index.ts
-
-// Datos del servidor con cache inteligente
-export const useArticles = (filters: ArticleFilters) => {
-  return useQuery({
-    queryKey: ['articles', filters], // Cache por filtros
-    queryFn: () => articleRepository.findAll(filters),
-    staleTime: 5 * 60 * 1000, // 5 minutos fresh
-  });
-};
-
-// Mutaciones con invalidación automática
-export const useCreateArticle = () => {
-  return useMutation({
-    mutationFn: (data) => articleRepository.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['articles']); // Refresca cache
-    },
-  });
-};
-```
-
-**¿Qué maneja React Query?**
-
-- 📊 **Datos del servidor**: artículos, ratings, favoritos
-- 🔄 **Cache inteligente**: evita peticiones innecesarias
-- ⚡ **Sincronización**: mantiene datos actualizados
-- 🔄 **Mutaciones**: CREATE, UPDATE, DELETE con invalidación
-
-**¿Por qué React Query para estos datos?**
-
-- 🚀 **Performance**: Cache optimizado y stale-while-revalidate
-- 🔄 **Sincronización**: Invalidación automática tras mutaciones
-- ⚡ **UX mejorada**: Loading states, error handling, retry automático
-- 🎯 **Menos boilerplate**: No necesita actions/reducers para cada endpoint
-
-### Comparación Práctica
-
-#### ❌ **Antipatrón**: Todo en Redux
-
-```typescript
-// MAL - Artículos en Redux
-const articlesSlice = createSlice({
-  name: 'articles',
-  initialState: { articles: [], loading: false, error: null },
-  reducers: {
-    fetchArticlesStart: (state) => {
-      state.loading = true;
-    },
-    fetchArticlesSuccess: (state, action) => {
-      state.articles = action.payload;
-      state.loading = false;
-    },
-    // ... mucho boilerplate
-  },
-});
-```
-
-#### ✅ **Patrón Correcto**: Separación de Responsabilidades
-
-```typescript
-// BIEN - UI State en Redux
-const uiSlice = createSlice({
-  name: 'ui',
-  reducers: {
-    setTheme: (state, action) => {
-      state.theme = action.payload;
-    },
-  },
-});
-
-// BIEN - Server State en React Query
-const useArticles = () =>
-  useQuery({
-    queryKey: ['articles'],
-    queryFn: fetchArticles,
-    // Cache, retry, background updates automáticos
-  });
-```
-
-### Flujo de Datos
-
-```
-┌─────────────────────────────────────────┐
-│                 UI LAYER                │
-│  Components consume state via hooks     │
-└─────────────────┬───────────────────────┘
-                  │
-         ┌────────▼──────────┐
-         │   HOOK LAYER      │
-         │ useSelector()     │  useQuery()
-         │ useDispatch()     │  useMutation()
-         └────────┬──────────┘
-                  │
-    ┌─────────────▼─────────────┐
-    │      STATE MANAGERS       │
-    │                           │
-┌───▼────┐              ┌─────▼─────┐
-│ REDUX  │              │   REACT   │
-│        │              │   QUERY   │
-│ • UI   │              │ • Server  │
-│ • Nav  │              │ • Cache   │
-│ • Prefs│              │ • Sync    │
-└────────┘              └───────────┘
-```
-
-### Ventajas de esta Arquitectura
-
-1. **🎯 Separación Clara**: Cada herramienta para su propósito específico
-2. **⚡ Performance**: Cache optimizado para datos del servidor
-3. **🔧 Mantenibilidad**: Menos código para manejar server state
-4. **🎭 UX Superior**: Loading/error states automáticos
-5. **🧪 Testing**: Más fácil mockear datos del servidor
-6. **📈 Escalabilidad**: Fácil agregar nuevos endpoints
-
-Esta separación permite que cada herramienta haga lo que mejor sabe hacer, resultando en código más limpio, mejor performance y una experiencia de desarrollo superior.
-
-## 🚀 Deployment y Configuración de Producción
-
-### Vercel Deployment
-
-El proyecto está configurado y desplegado en **Vercel** con las siguientes optimizaciones:
-
-#### Configuración SPA (Single Page Application)
-
-```json
-// vercel.json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
-```
-
-**¿Por qué esta configuración?**
-
-- ✅ **Routing del lado del cliente**: React Router maneja todas las rutas
-- ✅ **Recarga de página**: URLs como `/favorites` funcionan al recargar
-- ✅ **404 Prevention**: Evita errores 404 en rutas del SPA
-- ✅ **SEO-friendly**: Todas las rutas devuelven el HTML principal
-
-#### Build & Deploy Pipeline
-
-```bash
-# Build automático en Vercel
-npm run build          # Genera build optimizado
-npm run preview         # Preview local del build
-```
-
-#### Environment Configuration
-
-```bash
-# Variables de entorno para producción
-VITE_API_URL=https://api.example.com    # URL de API (futuro)
-VITE_APP_NAME=Article Manager           # Nombre de la aplicación
-```
-
-#### Performance Optimizations
-
-- **Vite**: Build ultra-rápido con tree-shaking automático
-- **Code Splitting**: Chunks optimizados por ruta
-- **Static Assets**: Optimización automática de imágenes y CSS
-- **CDN**: Distribución global automática en Vercel Edge Network
-
-## Patrones de Diseño
-
-### 1. Repository Pattern
-
-```typescript
-// Domain - Interface
-export interface ArticleRepository {
-  findAll(filters: ArticleFilters): Promise<PaginatedResponse<Article>>;
-  findById(id: string): Promise<Article | null>;
-  create(
-    article: Omit<Article, 'id' | 'createdAt' | 'updatedAt'>
-  ): Promise<Article>;
-}
-
-// Infrastructure - Implementation
-export class MockArticleRepository implements ArticleRepository {
-  // Implementación específica
-}
-```
-
-### 2. Dependency Injection
-
-```typescript
-// Services layer - Inyección de dependencias
-export const articleRepository = new MockArticleRepository();
-export const ratingRepository = new MockRatingRepository();
-```
-
-### 3. Custom Hooks Pattern
-
-```typescript
-// Encapsulación de lógica de negocio
-export const useToggleFavorite = () => {
-  return useMutation({
-    mutationFn: async ({ articleId, isFavorite }: ToggleFavoriteParams) => {
-      // Lógica de negocio
-    },
-  });
-};
-```
-
-### 4. Component Composition
-
-```typescript
-// Componentes compuestos y reutilizables
-<ArticleFilter>
-  <ArticleCategoryFilter />
-  <ArticleMinimumRating />
-  <ArticleFiltersInputSearch />
-</ArticleFilter>
 ```
 
 ## Instalación y Configuración
 
 ### Requisitos del Sistema
 
-- **Node.js 22** - Versión requerida para ejecutar el proyecto
+- **Node.js 22** - Versión de runtime requerida
 - **Bun** (recomendado) o **npm** - Gestor de paquetes
 
 ### Proceso de Instalación
 
-1. **Instalar Node.js en su versión 22**
+1. **Instalar Node.js versión 22**
    - Descargar desde [nodejs.org](https://nodejs.org/)
    - Verificar instalación: `node --version`
 
@@ -657,57 +699,6 @@ export const useToggleFavorite = () => {
 
    La aplicación estará disponible en `http://localhost:5173`
 
-### Path Aliases
-
-El proyecto utiliza path aliases para importaciones más limpias:
-
-```typescript
-// vite.config.ts & tsconfig.json
-"@": "./src"
-"@components": "./src/shared/components"
-"@features": "./src/features"
-"@pages": "./src/pages"
-"@hooks": "./src/shared/hooks"
-"@utils": "./src/shared/utils"
-"@types": "./src/shared/types"
-```
-
-### Variables de Entorno
-
-```bash
-# .env example
-VITE_API_URL=http://localhost:3000/api
-VITE_APP_NAME=Gestión de Artículos
-```
-
-### Configuración de Archivos Lock
-
-El proyecto mantiene ambos archivos de lock para flexibilidad:
-
-```bash
-bun.lock          # Lock file de Bun (binario)
-package-lock.json # Lock file de npm (JSON)
-```
-
-**Recomendación**: Usar Bun para desarrollo debido a su velocidad superior, pero mantener compatibilidad con npm para CI/CD y equipos que prefieran npm.
-
-## Gestión de Paquetes
-
-Este proyecto soporta tanto **Bun** como **npm** como gestores de paquetes:
-
-- 📦 **Bun** (recomendado): Runtime y gestor de paquetes ultra-rápido
-- 📦 **npm**: Gestor de paquetes tradicional de Node.js
-
-### Instalación de Dependencias
-
-```bash
-# Con Bun (recomendado - más rápido)
-bun install
-
-# Con npm (alternativo)
-npm install
-```
-
 ## Scripts Disponibles
 
 ### Con Bun (Recomendado)
@@ -718,17 +709,17 @@ bun dev              # Servidor de desarrollo
 bun run build        # Build de producción
 bun run preview      # Preview del build
 
-# Code Quality
-bun run lint         # Linting con ESLint
-bun run lint:fix     # Fix automático
+# Calidad de Código
+bun run lint         # ESLint
+bun run lint:fix     # Auto-corrección
 bun run format       # Formateo con Prettier
 
 # Testing
-bun test             # Tests unitarios (watch mode)
-bun run test:run     # Tests unitarios (single run)
+bun test             # Pruebas unitarias (modo watch)
+bun run test:run     # Pruebas unitarias (ejecución única)
 bun run test:ui      # UI de Vitest
-bun run cypress:open # Cypress en modo interactivo
-bun run cypress:run  # Cypress en modo headless
+bun run cypress:open # Cypress interactivo
+bun run cypress:run  # Cypress headless
 ```
 
 ### Con npm (Alternativo)
@@ -739,486 +730,123 @@ npm run dev          # Servidor de desarrollo
 npm run build        # Build de producción
 npm run preview      # Preview del build
 
-# Code Quality
-npm run lint         # Linting con ESLint
-npm run lint:fix     # Fix automático
-npm run format       # Formateo con Prettier
-
 # Testing
-npm run test         # Tests unitarios (watch mode)
-npm run test:run     # Tests unitarios (single run)
-npm run test:ui      # UI de Vitest
-npm run cypress:open # Cypress en modo interactivo
-npm run cypress:run  # Cypress en modo headless
+npm run test         # Pruebas unitarias (modo watch)
+npm run test:run     # Pruebas unitarias (ejecución única)
+npm run cypress:open # Cypress interactivo
+npm run cypress:run  # Cypress headless
 ```
 
-### ⚡ Ventajas de Bun
+## Estrategia de Testing
 
-- **🚀 Velocidad**: Hasta 25x más rápido que npm en instalación
-- **🔋 Runtime nativo**: JavaScript/TypeScript runtime construido desde cero
-- **📦 Todo en uno**: Bundler, test runner, y package manager integrados
-- **⚡ Hot reload**: Recarga instantánea en desarrollo
-- **🎯 Compatibilidad**: 100% compatible con Node.js y npm
+### Cobertura de Pruebas: 15/15 ✅
 
-## Testing
-
-### Estrategia de Testing
-
-#### 1. Tests Unitarios (Vitest + Testing Library)
+#### 1. Pruebas Unitarias (Vitest + Testing Library)
 
 ```typescript
-// Componentes aislados
 describe('ArticleCard', () => {
-  test('displays article information correctly', () => {
+  test('muestra información del artículo correctamente', () => {
     render(<ArticleCard article={mockArticle} />);
     expect(screen.getByText(mockArticle.title)).toBeInTheDocument();
   });
 });
+```
 
-// Tests de integración de favoritos
+#### 2. Pruebas de Integración
+
+```typescript
 describe('FavoritesIntegration', () => {
-  test('should toggle favorite status and sync with server state', async () => {
-    // Test completo de funcionalidad de favoritos
+  test('debería alternar favorito y sincronizar con estado del servidor', async () => {
+    // Pruebas de funcionalidad completa
   });
 });
 ```
 
-#### 2. Tests de Integración
+#### 3. Pruebas E2E (Cypress)
 
 ```typescript
-// Flujos completos de funcionalidades
-test('creates and displays new article', async () => {
-  // Test del flujo completo
-});
-```
-
-#### 3. Tests E2E (Cypress)
-
-```typescript
-// cypress/e2e/article-happy-path.cy.ts
-describe('Article Management Happy Path', () => {
-  it('should complete full article lifecycle', () => {
+describe('Flujo Completo de Gestión de Artículos', () => {
+  it('debería completar el ciclo de vida completo del artículo', () => {
     cy.visit('/articles');
     cy.get('[data-testid="create-article"]').click();
-    // Test del flujo completo del usuario
+    // Pruebas del flujo completo del usuario
   });
 });
 ```
 
-### Diagrama de Estrategia de Testing
+## Despliegue
 
-```mermaid
-pyramid
-    title Testing Strategy Pyramid
+### Configuración Vercel
 
-    %% E2E Tests (Top)
-    section E2E Tests
-        "Cypress E2E" : 15
-        "User Workflows" : 10
-        "Happy Paths" : 8
+El proyecto está desplegado en **Vercel** con optimización SPA:
 
-    %% Integration Tests (Middle)
-    section Integration Tests
-        "Feature Tests" : 25
-        "Hook Integration" : 20
-        "Component Integration" : 15
-
-    %% Unit Tests (Base)
-    section Unit Tests
-        "Component Tests" : 40
-        "Hook Tests" : 35
-        "Utility Tests" : 30
-        "Repository Tests" : 25
+```json
+// vercel.json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
 ```
 
-### Flujo E2E - Article Lifecycle
+**Beneficios:**
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as React UI
-    participant H as Hooks Layer
-    participant RQ as React Query
-    participant R as Repository
-    participant LS as LocalStorage
-
-    Note over U,LS: Article Creation Flow
-
-    U->>UI: Navigate to /articles/create
-    UI->>UI: Render ArticleForm
-
-    U->>UI: Fill form & click Submit
-    UI->>H: useCreateArticle()
-    H->>RQ: useMutation trigger
-    RQ->>R: articleRepository.create()
-    R->>LS: Store new article
-
-    LS-->>R: Article saved
-    R-->>RQ: Return new article
-    RQ-->>H: onSuccess callback
-    H->>RQ: invalidateQueries(['articles'])
-    RQ-->>UI: Redirect to /articles
-
-    Note over U,LS: Rating & Favorite Flow
-
-    U->>UI: Click star rating
-    UI->>H: useRateArticle()
-    H->>RQ: Rating mutation
-    RQ->>R: ratingRepository.rate()
-    R->>LS: Update rating
-
-    U->>UI: Click favorite heart
-    UI->>H: useToggleFavorite()
-    H->>RQ: Favorite mutation
-    RQ->>R: favoriteRepository.toggle()
-    R->>LS: Update favorite status
-
-    Note over U,LS: Real-time UI Updates
-    LS-->>UI: Optimistic updates
-    UI-->>U: Immediate feedback
-```
-
-### Coverage y Calidad
-
-- **Cobertura actual**: 15/15 tests unitarios passing (100%)
-- **Tests por feature**: Unitarios + Integración + E2E
-- **Mocking**: Repositorios mockeados para testing
-- **E2E Validation**: Tests específicos para validación de formularios
-- **Accesibilidad**: Validación de IDs únicos y labels apropiados
-
-## Path Aliases
-
-El proyecto utiliza path aliases configurados tanto en Vite como en TypeScript:
-
-### Antes (rutas relativas)
-
-```typescript
-import { Article } from '../../../shared/types';
-import { Button } from '../../../shared/components/Button';
-```
-
-### Después (path aliases)
-
-```typescript
-import { Article } from '@types';
-import { Button } from '@components/Button';
-```
+- ✅ Soporte de enrutamiento del lado del cliente
+- ✅ Recarga de página funciona en todas las rutas
+- ✅ Prevención de 404 para rutas SPA
+- ✅ Distribución CDN global
 
 ## Componentes Principales
 
 ### ArticleCard
 
 - **Ubicación**: `src/features/articles/components/ArticleCard/`
-- **Funcionalidad**: Muestra información del artículo con acciones
-- **Features**: Rating, favoritos, edición, eliminación
+- **Características**: Calificación, favoritos, editar, eliminar acciones
 
 ### ArticleForm
 
 - **Ubicación**: `src/features/articles/components/ArticleForm/`
-- **Funcionalidad**: Formulario para crear/editar artículos
-- **Validación**: TypeScript + validación personalizada
-
-### ArticleFilters
-
-- **Ubicación**: `src/features/articles/components/ArticleFilter/`
-- **Funcionalidad**: Filtrado avanzado de artículos
-- **Componentes**: Categoría, subcategoría, rating mínimo, búsqueda
-
-### Pagination
-
-- **Ubicación**: `src/features/articles/components/Pagination/`
-- **Funcionalidad**: Paginación de resultados
-- **Features**: Navegación, info de página actual
+- **Características**: Crear/editar artículos con validación TypeScript
 
 ### FavoritesPage
 
 - **Ubicación**: `src/pages/favorites/FavoritesPage.tsx`
-- **Funcionalidad**: Página dedicada para mostrar artículos favoritos
-- **Features**: Estado vacío elegante, grid responsivo, navegación a artículos
-- **Hooks**: `useFavorites()` para gestión de estado de favoritos
+- **Características**: Página de favoritos dedicada con estado vacío elegante
 
-### Layout con Navegación Mejorada
+### Layout
 
 - **Ubicación**: `src/components/Layout.tsx`
-- **Funcionalidad**: Layout principal con navegación consistente
-- **Features**: Botones estilizados, navegación responsive, dropdown de categorías
-- **Componentes**: Utiliza componentes Button para consistencia visual
+- **Características**: Navegación consistente con diseño responsive
 
-## Preguntas y Respuestas
+## Preguntas Frecuentes
 
-### Arquitectura y Organización
+### ¿Por qué Arquitectura Hexagonal?
 
-#### ¿Cómo se implementa el enfoque Vertical Slice en este proyecto?
+**Beneficios:**
 
-El proyecto implementa **Vertical Slice Architecture** organizando el código por features/dominios en lugar de por capas técnicas:
+- 🎯 **Separación clara** entre lógica de negocio y preocupaciones externas
+- 🔄 **Testing fácil** con dependencias mockeables
+- 📦 **Independencia tecnológica** - se pueden intercambiar implementaciones
+- 🚀 **Mantenibilidad** - cambios aislados a capas específicas
 
-```
-features/
-└── articles/                    # Slice vertical completo
-    ├── components/             # UI específica del dominio
-    │   ├── ArticleCard/
-    │   ├── ArticleForm/
-    │   └── ArticleFilters/
-    ├── hooks/                  # Lógica de negocio del dominio
-    │   ├── useArticles.ts
-    │   ├── useToggleFavorite.ts
-    │   └── useRateArticle.ts
-    ├── services/              # Servicios e inyección de dependencias
-    │   └── index.ts
-    └── __tests__/             # Tests específicos del feature
-        ├── ArticleForm.test.tsx
-        └── ArticleIntegration.test.tsx
-```
+### ¿Por qué Redux + React Query?
 
-**Ventajas de este enfoque:**
+**Fortalezas complementarias:**
 
-- 🎯 **Cohesión alta**: Todo lo relacionado con articles está junto
-- 🔄 **Acoplamiento bajo**: Cada feature es independiente
-- 🧪 **Testing facilitado**: Tests específicos por dominio
-- 👥 **Colaboración mejorada**: Equipos pueden trabajar en features independientes
-
-#### ¿Cómo se justifican las decisiones arquitectónicas inspiradas en Arquitectura Hexagonal?
-
-La **Arquitectura Hexagonal** se implementa a través de tres capas principales:
-
-##### 1. **Dominio (Core Business Logic)**
-
-```typescript
-// src/domain/repositories.ts
-export interface ArticleRepository {
-  findAll(filters: ArticleFilters): Promise<PaginatedResponse<Article>>;
-  findById(id: string): Promise<Article | null>;
-  create(article: CreateArticleRequest): Promise<Article>;
-}
-```
-
-- **Responsabilidad**: Define las reglas de negocio y contratos
-- **Sin dependencias**: No conoce detalles de implementación
-- **Estable**: Cambia solo cuando cambian las reglas de negocio
-
-##### 2. **Aplicación (Use Cases & Orchestration)**
-
-```typescript
-// src/features/articles/hooks/index.ts
-export const useCreateArticle = () => {
-  return useMutation({
-    mutationFn: (article: CreateArticleRequest) =>
-      articleRepository.create(article),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['articles']);
-    },
-  });
-};
-```
-
-- **Responsabilidad**: Orquesta casos de uso y coordina el flujo
-- **Depende del dominio**: Usa interfaces definidas en el dominio
-- **Independiente de UI**: No conoce React o componentes específicos
-
-##### 3. **Infraestructura (External Adapters)**
-
-```typescript
-// src/infrastructure/repositories/MockArticleRepository.ts
-export class MockArticleRepository implements ArticleRepository {
-  private articles: Article[] = [];
-
-  async findAll(filters: ArticleFilters): Promise<PaginatedResponse<Article>> {
-    // Implementación específica con datos mock
-  }
-}
-```
-
-- **Responsabilidad**: Implementa los contratos del dominio
-- **Adaptadores**: Puede ser Mock, HTTP API, Database, etc.
-- **Intercambiable**: Se puede cambiar sin afectar el dominio
-
-#### ¿Cómo se separa la lógica de negocio de los adaptadores?
-
-La separación se logra a través del **patrón Repository** y **Dependency Injection**:
-
-##### **1. Definición de Contratos (Dominio)**
-
-```typescript
-// domain/repositories.ts - Puerto (Port)
-export interface ArticleRepository {
-  findAll(filters: ArticleFilters): Promise<PaginatedResponse<Article>>;
-}
-
-export interface RatingRepository {
-  rateArticle(articleId: string, rating: number): Promise<void>;
-}
-```
-
-##### **2. Implementación de Adaptadores (Infraestructura)**
-
-```typescript
-// infrastructure/repositories/ - Adaptadores (Adapters)
-
-// Adaptador para datos Mock
-export class MockArticleRepository implements ArticleRepository {
-  async findAll(filters: ArticleFilters) {
-    return this.mockData.filter(/* lógica de filtrado */);
-  }
-}
-
-// Adaptador para API HTTP (futuro)
-export class HttpArticleRepository implements ArticleRepository {
-  async findAll(filters: ArticleFilters) {
-    return axios.get('/api/articles', { params: filters });
-  }
-}
-
-// Adaptador para IndexedDB (futuro)
-export class IndexedDBArticleRepository implements ArticleRepository {
-  async findAll(filters: ArticleFilters) {
-    return this.db.articles.where(filters).toArray();
-  }
-}
-```
-
-##### **3. Inyección de Dependencias (Aplicación)**
-
-```typescript
-// features/articles/services/index.ts
-import { MockArticleRepository } from '@/infrastructure/repositories/MockArticleRepository';
-
-// Inyección - Se puede cambiar fácilmente
-export const articleRepository = new MockArticleRepository();
-
-// En producción podría ser:
-// export const articleRepository = new HttpArticleRepository();
-// export const articleRepository = new IndexedDBArticleRepository();
-```
-
-##### **4. Uso en la Aplicación (Sin conocer la implementación)**
-
-```typescript
-// features/articles/hooks/index.ts
-import { articleRepository } from '../services'; // No sabe qué implementación es
-
-export const useArticles = (filters: ArticleFilters) => {
-  return useQuery({
-    queryKey: ['articles', filters],
-    queryFn: () => articleRepository.findAll(filters), // Usa el contrato, no la implementación
-  });
-};
-```
-
-#### **Beneficios de esta Separación:**
-
-1. **🔄 Intercambiabilidad**: Cambiar de Mock a API real sin tocar lógica de negocio
-2. **🧪 Testabilidad**: Mock repositories para tests rápidos
-3. **📦 Independencia**: Lógica de negocio independiente de tecnologías externas
-4. **🚀 Evolución**: Fácil migración entre diferentes tecnologías de persistencia
-5. **👥 Colaboración**: Backend y Frontend pueden desarrollarse independientemente
-
-#### **Ejemplo Práctico de Cambio:**
-
-```typescript
-// Desarrollo (Mock)
-const articleRepository = new MockArticleRepository();
-
-// Producción (API)
-const articleRepository = new HttpArticleRepository(process.env.VITE_API_URL);
-
-// Testing (In-Memory)
-const articleRepository = new InMemoryArticleRepository();
-```
-
-La aplicación funciona igual independientemente de la implementación, demostrando la efectividad de la separación entre lógica de negocio y adaptadores.
+- Redux excele en estado UI que no requiere sincronización con servidor
+- React Query excele en datos del servidor con caché inteligente
+- Juntos proporcionan rendimiento óptimo y experiencia de desarrollador
 
 ---
 
-# English Documentation - Article Management System
+## Conclusion / Conclusión
 
-## Latest Updates
+**English**: This project demonstrates a solid implementation of modern architectural principles, combining Vertical Slice Architecture with Hexagonal Architecture to create a maintainable, testable, and scalable codebase. The clear separation between domain, application, and infrastructure, along with TypeScript and modern tooling, provides a robust foundation for enterprise React applications.
 
-### 🐛 **Category Filters Bug Fix** (v2.1)
-
-- **Bug identified**: Category filters (technology, business, science) weren't applied immediately
-- **Root cause**: Missing synchronization between URL parameters and local filter state
-- **Solution**: Implemented `useEffect` to automatically sync filters when URL parameters change
-- **UX improvement**: Filters now apply instantly without requiring additional navigation
-- **Updated code**: `src/pages/categories/CategoriesPage.tsx` with automatic state synchronization
-
-### 🎯 **Complete Favorites System** (v2.0)
-
-- **FavoritesPage**: Dedicated page for managing favorite articles with elegant empty state
-- **Integrated navigation**: "Favorites" link in header with consistent navigation
-- **Real-time sync**: Optimistic state with React Query for better UX
-- **Persistence**: Favorites saved in LocalStorage with automatic synchronization
-- **Comprehensive tests**: 15/15 unit tests including favorites integration
-
-### 🔧 **Enhanced Form Validation** (v1.9)
-
-- **HTML5 Validation**: `required` attributes on all mandatory fields
-- **Improved accessibility**: Unique IDs and proper labels for screen readers
-- **E2E Testing**: Validation tests that verify form behavior
-- **Consistent UX**: Uniform validation across create and edit articles
-
-## Overview
-
-The Article Management System is a React web application that allows users to manage articles with features including:
-
-- ✅ Create, edit and delete articles
-- ⭐ Rating system (1-5 stars)
-- ❤️ **Mark articles as favorites** with dedicated page
-- 🔍 Advanced filtering by category, subcategory, minimum rating
-- 📱 Responsive interface with Tailwind CSS
-- 🧪 Complete testing (unit, integration, E2E)
-- ✅ **HTML5 form validation** for better user experience
-- 🎨 **Enhanced navigation** with consistent Button components
-
-## Architecture
-
-This project follows **Hexagonal Architecture (Ports & Adapters)** combined with **Vertical Slice Architecture**, organizing code in well-defined layers:
-
-### Architectural Benefits
-
-1. **🎯 Clear separation**: Domain, application, and infrastructure layers
-2. **⚡ Performance**: Optimized cache for server data with React Query
-3. **🔧 Maintainability**: Less boilerplate for server state management
-4. **🎭 Superior UX**: Automatic loading/error states
-5. **🧪 Testing**: Easier to mock server data
-6. **📈 Scalability**: Easy to add new endpoints
-
-## Bug Fix Details
-
-### Problem Description
-
-When clicking category filter buttons (technology, business, science), the filter wasn't applied immediately. Users had to navigate to an article and return for the filter to take effect.
-
-### Root Cause Analysis
-
-The issue was in `CategoriesPage.tsx` where the local filter state wasn't synchronizing with URL parameter changes. The `useArticles` hook was called with initial filters and didn't re-execute when URL parameters changed.
-
-### Solution Implementation
-
-Added a `useEffect` hook that monitors changes in `categoryId` and `subcategoryId` URL parameters and automatically updates the filter state:
-
-```typescript
-// Synchronize filters when URL parameters change
-useEffect(() => {
-  setFilters((prevFilters) => ({
-    ...prevFilters,
-    categoryId,
-    subcategoryId,
-    page: 1, // Reset page when category filters change
-  }));
-}, [categoryId, subcategoryId]);
-```
-
-### Impact
-
-- ✅ Immediate filter application when clicking category buttons
-- ✅ Improved user experience with instant feedback
-- ✅ Consistent behavior across all category navigation
-- ✅ Automatic page reset when filters change
+**Español**: Este proyecto demuestra una implementación sólida de principios arquitectónicos modernos, combinando Vertical Slice Architecture con Arquitectura Hexagonal para crear una base de código mantenible, testeable y escalable. La separación clara entre dominio, aplicación e infraestructura, junto con TypeScript y herramientas modernas, proporciona una base robusta para aplicaciones React empresariales.
 
 ---
 
-## Conclusión
+<div align="center">
 
-Este proyecto demuestra una implementación sólida de principios arquitectónicos modernos, combinando Vertical Slice Architecture con Arquitectura Hexagonal para crear una base de código mantenible, testeable y escalable.
+**Made with ❤️ using React, TypeScript, and Modern Web Technologies**
 
-La separación clara entre dominio, aplicación e infraestructura, junto con el uso de TypeScript y herramientas modernas, proporciona una base robusta para el desarrollo de aplicaciones React empresariales.
+</div>
