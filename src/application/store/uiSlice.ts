@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { STORAGE_KEYS } from '@/shared/constants';
 
 /**
  * Interface defining the UI state structure
@@ -14,9 +15,61 @@ interface UIState {
   currentPage: string;
 }
 
+/**
+ * Gets the saved theme from localStorage or detects system preference
+ * @returns The saved theme or system preference ('light' or 'dark')
+ */
+const getInitialTheme = (): 'light' | 'dark' => {
+  // Check if we're in a browser environment
+  if (typeof window === 'undefined') return 'light';
+
+  // Try to get saved theme from localStorage
+  try {
+    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as
+      | 'light'
+      | 'dark'
+      | null;
+    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+      return savedTheme;
+    }
+  } catch {
+    // localStorage might not be available in some environments (e.g., tests)
+  }
+
+  // Fall back to system preference (with safety check for test environments)
+  try {
+    if (window.matchMedia) {
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+      return prefersDark ? 'dark' : 'light';
+    }
+  } catch {
+    // matchMedia might not be available in test environments
+  }
+
+  // Final fallback to light theme
+  return 'light';
+};
+
+/**
+ * Saves theme to localStorage
+ * @param theme - Theme to save
+ */
+const saveThemeToStorage = (theme: 'light' | 'dark'): void => {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+    } catch {
+      // localStorage might not be available in some environments (e.g., tests)
+      console.warn('Failed to save theme to localStorage');
+    }
+  }
+};
+
 /** Initial state for the UI slice */
 const initialState: UIState = {
-  theme: 'light',
+  theme: getInitialTheme(),
   isLoading: false,
   error: null,
   currentPage: '/',
@@ -37,6 +90,8 @@ const uiSlice = createSlice({
      */
     setTheme: (state, action: PayloadAction<'light' | 'dark'>) => {
       state.theme = action.payload;
+      // Save theme to localStorage for persistence
+      saveThemeToStorage(action.payload);
     },
     /**
      * Sets the global loading state

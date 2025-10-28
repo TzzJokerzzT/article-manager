@@ -58,4 +58,5 @@ export const STORAGE_KEYS = {
   FAVORITES: 'article_favorites',
   RATINGS: 'article_ratings',
   ARTICLES: 'articles_cache',
+  THEME: 'app_theme',
 } as const;
