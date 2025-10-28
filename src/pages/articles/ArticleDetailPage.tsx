@@ -1,22 +1,23 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   useArticle,
-  useFavorites,
   useArticleRating,
+  useToggleFavorite,
 } from '@/features/articles/hooks';
 import { formatDate } from '@/shared/utils';
 import { CATEGORIES } from '@/shared/constants';
 import { Button } from '@/shared/components/Button/Button';
-import { MoveLeft } from 'lucide-react';
+import { Heart, HeartOff, MoveLeft } from 'lucide-react';
 import { LeftEnterAnimation } from '@/shared/components/Animation/LeftEnterAnimation';
 
 const ArticleDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const toggleFavorite = useToggleFavorite();
   const { data: article, isLoading, error } = useArticle(id!);
-  const { data: favorites = [] } = useFavorites();
   const { data: rating } = useArticleRating(id!);
 
+  // Early returns for loading and error states
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -37,9 +38,18 @@ const ArticleDetailPage = () => {
     );
   }
 
-  const category = CATEGORIES.find((cat) => cat.id === article.categoryId);
+  const handleToggleFavorite = () => {
+    if (!article) return; // Extra safety check
+
+    toggleFavorite.mutate({
+      articleId: article.id,
+      isFavorite: !!article.isFavorite,
+    });
+  };
+
+  const category = CATEGORIES.find((cat) => cat.id === article?.categoryId);
   const subcategory = category?.subcategories?.find(
-    (sub) => sub.id === article.subcategoryId
+    (sub) => sub.id === article?.subcategoryId
   );
 
   return (
@@ -60,11 +70,21 @@ const ArticleDetailPage = () => {
               <h1 className="text-3xl font-bold text-gray-900">
                 {article.title}
               </h1>
-              <span
-                className={`text-2xl ${favorites.includes(article.id) ? 'text-red-500' : 'text-gray-400'}`}
+
+              <Button
+                onClick={handleToggleFavorite}
+                aria-label={article.isFavorite ? 'Unfavorite' : 'Favorite'}
+                color={article.isFavorite ? 'danger' : 'secondary'}
+                variant="light"
+                disabled={toggleFavorite.isPending}
+                data-testid={`favorite-${article.id}`}
               >
-                ♥
-              </span>
+                {article.isFavorite ? (
+                  <Heart color="#dc2626" fill="#dc2626" />
+                ) : (
+                  <HeartOff color="#6b7280" />
+                )}
+              </Button>
             </div>
 
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
@@ -83,22 +103,25 @@ const ArticleDetailPage = () => {
 
             <div className="flex items-center gap-4 mb-4">
               <div className="flex">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className={`text-lg ${
-                      star <= (rating?.rating || article.rating)
-                        ? 'text-yellow-400'
-                        : 'text-gray-300'
-                    }`}
-                  >
-                    ★
-                  </span>
-                ))}
+                {[1, 2, 3, 4, 5].map((star) => {
+                  const currentRating = rating?.rating ?? article.rating;
+                  return (
+                    <span
+                      key={star}
+                      className={`text-lg ${
+                        star <= currentRating
+                          ? 'text-yellow-400'
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      ★
+                    </span>
+                  );
+                })}
               </div>
               <span className="text-sm text-gray-600">
-                {(rating?.rating || article.rating).toFixed(1)} (
-                {rating?.count || article.ratingCount} votes)
+                {(rating?.rating ?? article.rating).toFixed(1)} (
+                {rating?.count ?? article.ratingCount} votes)
               </span>
             </div>
 

@@ -49,6 +49,16 @@ El Sistema de Gestión de Artículos es una aplicación web moderna desarrollada
 
 ## Últimas Actualizaciones
 
+### 🔧 **Correcciones TypeScript y Tests** (v2.2)
+
+- **Problema**: Problemas TypeScript null/undefined en ArticleDetailPage + 2 tests fallidos en FavoritesIntegration
+- **Causa Raíz**: Callback definido antes de verificaciones null; FavoritesPage mostrando CardExamples en lugar de MessageNoFavorites
+- **Solución**: Reestructurado flujo de componente con type guards apropiados; Corregida lógica de estado vacío en favoritos
+- **Impacto**: Compilación TypeScript limpia, todos los 15/15 tests pasando
+- **Archivos Actualizados**:
+  - `src/pages/articles/ArticleDetailPage.tsx` - Manejo null mejorado y type safety
+  - `src/pages/favorites/FavoritesPage.tsx` - Corregida lógica de visualización de estado vacío
+
 ### 🐛 **Corrección Bug Filtros de Categorías** (v2.1)
 
 - **Problema**: Los filtros de categoría (technology, business, science) no se aplicaban inmediatamente

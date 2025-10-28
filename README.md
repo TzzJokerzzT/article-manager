@@ -49,6 +49,16 @@ The Article Management System is a modern React web application that allows user
 
 ## Latest Updates
 
+### 🔧 **TypeScript & Test Fixes** (v2.2)
+
+- **Problem**: TypeScript null/undefined issues in ArticleDetailPage + 2 failing tests in FavoritesIntegration
+- **Root Cause**: Callback defined before null checks; FavoritesPage showing CardExamples instead of MessageNoFavorites
+- **Solution**: Restructured component flow with proper type guards; Fixed favorites empty state logic
+- **Impact**: Clean TypeScript compilation, all 15/15 tests passing
+- **Files Updated**:
+  - `src/pages/articles/ArticleDetailPage.tsx` - Enhanced null handling and type safety
+  - `src/pages/favorites/FavoritesPage.tsx` - Corrected empty state display logic
+
 ### 🐛 **Category Filters Bug Fix** (v2.1)
 
 - **Problem**: Category filters (technology, business, science) weren't applying immediately
